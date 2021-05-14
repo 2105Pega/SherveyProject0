@@ -71,8 +71,12 @@ public class ClientDriver {
 			System.out.println("3.) Apply for Account");
 			System.out.println("4.) Exit");
 			
+			while(kIn.hasNextInt() == false)
+			{
+				kIn.nextLine();
+			}
+			
 			selection = kIn.nextInt();
-			kIn.nextLine();
 			
 			switch (selection)
 			{
@@ -131,8 +135,8 @@ public class ClientDriver {
 				break;
 			}
 			
-		} while(selection < 0);
-		kIn.close();
+		} while(selection != 4);
+
 	}
 
 	private void manageAccount(Account a) throws Exception {
@@ -232,7 +236,6 @@ public class ClientDriver {
 				break;
 			}
 		}while(selection != 6);
-		kIn.close();
 	}
 
 	private void accountSummary(Account a) {
@@ -244,17 +247,15 @@ public class ClientDriver {
 	private void accountsSummary() 
 	{
 		System.out.println("Accounts you own:");
-		for(UUID u : currentClient.getOwnedAccounts())
+		for(Account a : accountList)
 		{
-			for(Account a : accountList)
+			if(a.getOwnerID().compareTo(currentClient.getClientID()) == 0)
 			{
-				if(a.getOwnerID() == u)
-				{
-					System.out.println(a.getAccountName());
-					System.out.printf("Balance: " + "%.2d", a.getBalance());
-					System.out.println("Account ID: " + a.getACCOUNT_ID() + "\n---------------------------------");
-				}
+				System.out.print(a.getAccountName() + ", Balance: " );
+				System.out.printf("%.2f, ", a.getBalance());
+				System.out.println("Status: " + a.getStatus() + ", ID: " + a.getACCOUNT_ID());
 			}
+
 		}
 		
 		System.out.println("Accounts you co-own.");
@@ -312,14 +313,13 @@ public class ClientDriver {
 			lName = kIn.nextLine();
 		}
 		
-		System.out.println("Please Enter your adress ");
+		System.out.println("Please Enter your Address: ");
 		String address = kIn.nextLine();
 		while(password.length() == 0)
 		{
 			System.out.println("Please your User Name: ");
 			address = kIn.nextLine();
 		}
-		
 		
 		boolean userValid = true;
 		
@@ -342,42 +342,20 @@ public class ClientDriver {
 		
 		for(Client c2 : clientList)
 			System.out.println(c2.toString());
-		
-		
-		kIn.close();
 	}
 	
 	public void createAccount()
 	{
 		Scanner kIn = new Scanner(System.in);
-		int selection;
-		
-		System.out.println("1. Solo Account.\n2. Join Account");
-		selection = kIn.nextInt();
-		kIn.nextLine();
-		
-		while(selection != 1 || selection != 2)
-		{
-			System.out.println("1. Solo Account.\n2. Join Account");
-			selection = kIn.nextInt();
-			kIn.nextLine();
-			
-		}
 		
 		System.out.println("Name your account: ");
 		String accountName = kIn.nextLine();
 		
-		if(selection == 1)
-		{	
-			Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
-			accountList.add(a);
-			currentClient.getOwnedAccounts().add(a.getACCOUNT_ID());
-		}
-		else
-		{
+		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
+		accountList.add(a);
+		currentClient.getOwnedAccounts().add(a.getACCOUNT_ID());
 
-		}
-		
-		kIn.close();
+		System.out.println(a.toString());
+		System.out.println(accountList.get(accountList.size() -1).toString());
 	}
 }

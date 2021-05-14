@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.revature.bank.Account;
@@ -42,7 +43,6 @@ public class BankDriver {
 		menu();
 		
 		save(clientList, accountList);
-		//saveAccounts(accountList);
 	}
 
 	
@@ -91,12 +91,10 @@ public class BankDriver {
 		catch (IOException e)
 		{
 			System.out.println("Warning: Exception Occured During Load. Account and Client Lists Could Not Be Imported.");
-			System.out.println(e.getMessage());
 		}
 		catch (ClassNotFoundException e)
 		{
 			System.out.println("Warning: Exception Occured During Load. Could Not Read Save File Correctly.");
-			System.out.println(e.getMessage());
 		}
 		return null;
 	}
@@ -104,13 +102,17 @@ public class BankDriver {
 	public static void menu()
 	{
 		Scanner kIn = new Scanner(System.in);
-		int selection;
+		int selection = -1;
 		
 		do
 		{
 			displayMainMenu();
+			while(kIn.hasNextInt() == false)
+			{
+				kIn.nextLine();
+			}
 			selection = kIn.nextInt();
-			kIn.nextLine(); //Clears scanner so that futher prompts do not read the linebreak
+			kIn.nextLine();
 			switch (selection)
 			{
 			case 1:
@@ -140,8 +142,8 @@ public class BankDriver {
 				System.out.println("Error, invalid selection made. Please make a valid selection.");
 				break;
 			}
-			
 		} while (selection != 4);
+		
 		
 		kIn.close();
 	}
