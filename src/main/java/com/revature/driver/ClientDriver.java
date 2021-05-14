@@ -25,14 +25,12 @@ public class ClientDriver {
 	{
 		for(Account a : accountList)
 		{
-			if(a.getOwnerID().compareTo(AccountID) == 0);
+			if(a.getOwnerID().equals(AccountID));
 			{
 				return a;
 			}
 		}
-		
 		return null;
-			
 	}
 	
 	public int logIn(String userName, String password)
@@ -40,7 +38,7 @@ public class ClientDriver {
 		boolean validLogIn = false;
 		for(Client c : clientList)
 		{
-			if(c.getUsername().compareTo(userName) == 0 && c.getPassword().compareTo(password) == 0)
+			if(c.getUsername().equals(userName) && c.getPassword().equals(password))
 			{
 				currentClient = c;
 				validLogIn = true;
@@ -84,10 +82,17 @@ public class ClientDriver {
 				accountsSummary();
 				break;
 			case 2:
+				kIn.nextLine();
 				System.out.println("Enter Account ID");
 				String id = kIn.nextLine();
-				
-				Account a = selectAccount(UUID.fromString(id));
+				Account a = null;
+				try {
+					a = selectAccount(UUID.fromString(id));
+				}
+				catch(IllegalArgumentException e)
+				{
+					System.out.println("ID invalid. Please try again.");
+				}
 				
 				if(a == null)
 				{
@@ -95,7 +100,9 @@ public class ClientDriver {
 					break;
 				}
 				
-				if(a.getACCOUNT_ID().compareTo(currentClient.getClientID()) == 0)
+				System.out.println(a.getACCOUNT_ID() + "\n" + currentClient.getClientID());
+				
+				if(a.getOwnerID().equals(currentClient.getClientID()))
 				{
 					try {
 						manageAccount(a);
@@ -109,7 +116,7 @@ public class ClientDriver {
 				{
 					for(UUID u : a.getCoOwnerIDs())
 					{
-						if(u.compareTo(currentClient.getClientID()) == 0)
+						if(u.equals(currentClient.getClientID()))
 						{
 							try {
 								manageAccount(a);
@@ -129,12 +136,10 @@ public class ClientDriver {
 				break;
 			case 4:
 				return;
-				
 			default:
-				selection = -1;
 				break;
 			}
-			
+			selection = -1;
 		} while(selection != 4);
 
 	}
@@ -142,44 +147,48 @@ public class ClientDriver {
 	private void manageAccount(Account a) throws Exception {
 		Scanner kIn = new Scanner(System.in);
 		
-		System.out.println("1.) Summarize Account \n2.) Withdraw \n.3) Deposist \n4.) Transfer Funds\n5.)Add co-owner \n6.) Exit");
-		int selection = kIn.nextInt();
-		kIn.nextLine();
+		int selection = -1;
 		
 		do
 		{
+			System.out.println("1.) Summarize Account \n2.) Withdraw \n3.) Deposist \n4.) Transfer Funds\n5.)Add co-owner \n6.) Exit");
+			while(kIn.hasNextInt() == false)
+			{
+				kIn.nextLine();
+			}
+			selection = kIn.nextInt();
+			kIn.nextLine();
 			switch (selection)
 			{
 			case 1: //Sumaraized Currently Selected Account
 				accountSummary(a);
 				break;
+				
 			case 2: //Withdars Money from Current Account
 				int withdrawValue = kIn.nextInt();
 				kIn.nextLine();
-				
-				if(withdrawValue < 0)
-					throw new IllegalArgumentException("Cannot Withdraw Negative Funds");
-				else
-				{
-					try {
-					a.withdraw(withdrawValue);
-					}
-					catch (IllegalArgumentException e){
-						System.out.println(e.getMessage());
-					}
-					catch (IllegalStateException e)
-					{
-						System.out.println(e.getMessage());
-					}
-					if(a.getBalance() < 0)
-						System.out.println("Warning! You have overdrawn.");
-					System.out.print("Balance is now: " );
-					System.out.printf("Balance: " + "%.2d \n", a.getBalance());
+
+				try {
+				a.withdraw(withdrawValue);
 				}
+				catch (IllegalArgumentException e){
+					System.out.println(e.getMessage());
+				}
+				catch (IllegalStateException e)
+				{
+					System.out.println(e.getMessage());
+				}
+				if(a.getBalance() < 0)
+					System.out.println("Warning! You have overdrawn.");
+				System.out.print("Balance is now: " );
+				System.out.printf("Balance: " + "%.2f \n", a.getBalance());
+
 				break;
+				
 			case 3: //Deposits money to current Account
 				int depositValue = kIn.nextInt();
 				kIn.nextLine();
+				
 				try {
 				a.deposit(depositValue);
 				}
@@ -191,6 +200,7 @@ public class ClientDriver {
 					System.out.println(e.getMessage());
 				}
 				break;
+				
 			case 4: //Transfers Money from Current Account to Target Account
 				int transferValue = kIn.nextInt();
 				kIn.nextLine();
@@ -213,7 +223,7 @@ public class ClientDriver {
 				}
 					
 				break;
-			case 5: //Adds a Co-Owner to Current Account
+				case 5: //Adds a Co-Owner to Current Account
 				System.out.println("Please Enter co-owner User Name: ");
 				String userName = kIn.nextLine();
 				
@@ -227,21 +237,27 @@ public class ClientDriver {
 					else
 						System.out.println("Username not in System.");
 				}
+				break;
 				
-				break;
 			case 6:
+				return;
+				
+			case 1001:
+				a.setStatus(AccountStatus.APPROVED);
 				break;
+				
 			default:
-				selection = -1;
 				break;
+
 			}
+			selection = -1;
 		}while(selection != 6);
 	}
 
 	private void accountSummary(Account a) {
-		System.out.println(a.getAccountName());
-		System.out.printf("Balance: " + "%.2d \n", a.getBalance());
-		System.out.println("Account ID: " + a.getACCOUNT_ID() + "\n---------------------------------");
+		System.out.print(a.getAccountName() + ", Balance: " );
+		System.out.printf("%.2f, ", a.getBalance());
+		System.out.println("Status: " + a.getStatus() + ", ID: " + a.getACCOUNT_ID());
 	}
 
 	private void accountsSummary() 
@@ -249,13 +265,11 @@ public class ClientDriver {
 		System.out.println("Accounts you own:");
 		for(Account a : accountList)
 		{
-			if(a.getOwnerID().compareTo(currentClient.getClientID()) == 0)
+			if(a.getOwnerID().equals(currentClient.getClientID()))
 			{
-				System.out.print(a.getAccountName() + ", Balance: " );
-				System.out.printf("%.2f, ", a.getBalance());
-				System.out.println("Status: " + a.getStatus() + ", ID: " + a.getACCOUNT_ID());
+				accountSummary(a);
+			
 			}
-
 		}
 		
 		System.out.println("Accounts you co-own.");
@@ -265,7 +279,7 @@ public class ClientDriver {
 			{
 				for(UUID u2 : a.getCoOwnerIDs())
 				{
-					if(u2.compareTo(u) == 0)
+					if(u2.equals(u))
 					{
 						System.out.println(a.getAccountName() + ", Balance: " );
 						System.out.printf("%.2d", a.getBalance());

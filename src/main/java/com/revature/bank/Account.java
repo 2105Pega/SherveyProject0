@@ -79,8 +79,12 @@ public class Account implements Serializable {
 		{
 			throw new IllegalArgumentException("Cannot Withdraw Negative or Zero Funds");
 		}
+		else if(this.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Sending Account Not Approved.");
+		}
 		
-		balance = balance + ammountChange;
+		balance = balance - ammountChange;
 		return balance;
 
 	}
