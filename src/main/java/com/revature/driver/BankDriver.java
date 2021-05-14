@@ -7,10 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import com.revature.bank.Account;
+import com.revature.bank.AccountManager;
 import com.revature.bank.Client;
 import com.revature.bank.SavePacket;
 
@@ -19,6 +18,7 @@ public class BankDriver {
 	
 	//TODO: Fold Employee, Client, and Account into a set of 3 entries in 1 ArrayList to r/w them in all at once.
 	static ClientDriver clientDriver;
+	static ScannerSingleton sc = new ScannerSingleton();
 	
 	public static void main(String args[])
 	{
@@ -36,9 +36,10 @@ public class BankDriver {
 		{
 			clientList = new ArrayList<Client>();
 			accountList = new ArrayList<Account>();
-
 		}
-		clientDriver = new ClientDriver(clientList, accountList);
+		
+		AccountManager accountManager = new AccountManager(accountList);
+		clientDriver = new ClientDriver(clientList, accountManager);
 		
 		menu();
 		
@@ -101,18 +102,15 @@ public class BankDriver {
 
 	public static void menu()
 	{
-		Scanner kIn = new Scanner(System.in);
 		int selection = -1;
 		
 		do
 		{
 			displayMainMenu();
-			while(kIn.hasNextInt() == false)
-			{
-				kIn.nextLine();
-			}
-			selection = kIn.nextInt();
-			kIn.nextLine();
+			selection = sc.getInt();
+			
+			System.out.println(selection);
+			
 			switch (selection)
 			{
 			case 1:
@@ -120,9 +118,9 @@ public class BankDriver {
 				System.out.println("Client Log In Selected.");
 				
 				System.out.println("Enter Username: ");
-				String userName = kIn.nextLine();
+				String userName = sc.getLine();
 				System.out.println("Enter Password: ");
-				String password = kIn.nextLine();
+				String password = sc.getLine();
 				
 				clientDriver.logIn(userName, password);
 				
@@ -143,9 +141,6 @@ public class BankDriver {
 				break;
 			}
 		} while (selection != 4);
-		
-		
-		kIn.close();
 	}
 
 

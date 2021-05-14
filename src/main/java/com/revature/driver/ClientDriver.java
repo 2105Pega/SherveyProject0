@@ -1,36 +1,25 @@
 package com.revature.driver;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.UUID;
 
 import com.revature.bank.Account;
+import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
 
 public class ClientDriver {
 
 	private ArrayList<Client> clientList;
-	private ArrayList<Account> accountList;
 	
 	private Client currentClient;
+	static ScannerSingleton sc = new ScannerSingleton();
+	AccountManager aM;
 	
-	public ClientDriver(ArrayList<Client> clientList, ArrayList<Account> accountList)
+	public ClientDriver(ArrayList<Client> clientList, AccountManager aM)
 	{
 		this.clientList = clientList;
-		this.accountList = accountList;
-	}
-	
-	public Account selectAccount(UUID AccountID) 
-	{
-		for(Account a : accountList)
-		{
-			if(a.getOwnerID().equals(AccountID));
-			{
-				return a;
-			}
-		}
-		return null;
+		this.aM = aM;
 	}
 	
 	public int logIn(String userName, String password)
@@ -50,6 +39,7 @@ public class ClientDriver {
 			return -1;
 		}
 		
+		System.out.println("User Info: " + currentClient.toString());
 		clientMenu();
 		
 		return 1;
@@ -59,8 +49,6 @@ public class ClientDriver {
 	{
 		int selection = -1;
 		
-		Scanner kIn = new Scanner(System.in);
-		
 		do {
 			
 			System.out.println("Welcome " + currentClient.getUsername() + "!\nPlease select one of the follow options.");
@@ -69,25 +57,20 @@ public class ClientDriver {
 			System.out.println("3.) Apply for Account");
 			System.out.println("4.) Exit");
 			
-			while(kIn.hasNextInt() == false)
-			{
-				kIn.nextLine();
-			}
-			
-			selection = kIn.nextInt();
+			selection = sc.getInt();
 			
 			switch (selection)
 			{
 			case 1:
-				accountsSummary();
+				System.out.println(aM.accountsSummary(currentClient.getClientID()));
 				break;
 			case 2:
-				kIn.nextLine();
+
 				System.out.println("Enter Account ID");
-				String id = kIn.nextLine();
+				String id = sc.getLine();
 				Account a = null;
 				try {
-					a = selectAccount(UUID.fromString(id));
+					a = aM.getAccountByAccountID(UUID.fromString(id));
 				}
 				catch(IllegalArgumentException e)
 				{
@@ -99,8 +82,6 @@ public class ClientDriver {
 					System.out.println("Account ID not in System.");
 					break;
 				}
-				
-				System.out.println(a.getACCOUNT_ID() + "\n" + currentClient.getClientID());
 				
 				if(a.getOwnerID().equals(currentClient.getClientID()))
 				{
@@ -136,6 +117,23 @@ public class ClientDriver {
 				break;
 			case 4:
 				return;
+			case 555:
+				System.out.println("Current Client: " + currentClient.toString());
+				System.out.println("Client List: ");
+					
+				for(Client c : clientList)
+						System.out.println(c.toString());
+				
+				System.out.println("---------------------------------------------");
+				System.out.println("Account List: ");
+				
+				for(Account a2 : aM.getAllAccounts())
+					System.out.println(a2.toString());
+				
+				System.out.println("---------------------------------------------");
+
+				
+				break;
 			default:
 				break;
 			}
@@ -145,28 +143,20 @@ public class ClientDriver {
 	}
 
 	private void manageAccount(Account a) throws Exception {
-		Scanner kIn = new Scanner(System.in);
-		
 		int selection = -1;
 		
 		do
 		{
-			System.out.println("1.) Summarize Account \n2.) Withdraw \n3.) Deposist \n4.) Transfer Funds\n5.)Add co-owner \n6.) Exit");
-			while(kIn.hasNextInt() == false)
-			{
-				kIn.nextLine();
-			}
-			selection = kIn.nextInt();
-			kIn.nextLine();
+			System.out.println("1.) Summarize Account \n2.) Withdraw \n3.) Deposist \n4.) Transfer Funds\n5.) Add co-owner \n6.) Exit");
+			selection = sc.getInt();
 			switch (selection)
 			{
 			case 1: //Sumaraized Currently Selected Account
-				accountSummary(a);
+				System.out.println(aM.accountSummary(a));
 				break;
 				
 			case 2: //Withdars Money from Current Account
-				int withdrawValue = kIn.nextInt();
-				kIn.nextLine();
+				int withdrawValue = sc.getInt();
 
 				try {
 				a.withdraw(withdrawValue);
@@ -186,8 +176,7 @@ public class ClientDriver {
 				break;
 				
 			case 3: //Deposits money to current Account
-				int depositValue = kIn.nextInt();
-				kIn.nextLine();
+				int depositValue = sc.getInt();
 				
 				try {
 				a.deposit(depositValue);
@@ -202,12 +191,11 @@ public class ClientDriver {
 				break;
 				
 			case 4: //Transfers Money from Current Account to Target Account
-				int transferValue = kIn.nextInt();
-				kIn.nextLine();
+				int transferValue = sc.getInt();
 				
 				System.out.println("Enter target account's ID: ");
-				String transferAccountID = kIn.nextLine();
-				Account tAccount = selectAccount(UUID.fromString(transferAccountID));
+				String transferAccountID = sc.getLine();
+				Account tAccount = aM.getAccountByAccountID(UUID.fromString(transferAccountID));
 				
 				try {
 				a.transfer(tAccount, transferValue);
@@ -220,12 +208,12 @@ public class ClientDriver {
 				}
 				catch (IllegalStateException e) {
 					System.out.println(e.getMessage());
-				}
-					
+				}	
 				break;
-				case 5: //Adds a Co-Owner to Current Account
+				
+			case 5: //Adds a Co-Owner to Current Account
 				System.out.println("Please Enter co-owner User Name: ");
-				String userName = kIn.nextLine();
+				String userName = sc.getLine();
 				
 				for(Client c : clientList)
 				{
@@ -253,86 +241,49 @@ public class ClientDriver {
 			selection = -1;
 		}while(selection != 6);
 	}
-
-	private void accountSummary(Account a) {
-		System.out.print(a.getAccountName() + ", Balance: " );
-		System.out.printf("%.2f, ", a.getBalance());
-		System.out.println("Status: " + a.getStatus() + ", ID: " + a.getACCOUNT_ID());
-	}
-
-	private void accountsSummary() 
-	{
-		System.out.println("Accounts you own:");
-		for(Account a : accountList)
-		{
-			if(a.getOwnerID().equals(currentClient.getClientID()))
-			{
-				accountSummary(a);
-			
-			}
-		}
-		
-		System.out.println("Accounts you co-own.");
-		for(UUID u : currentClient.getCoOwnedAccounts())
-		{
-			for(Account a : accountList)
-			{
-				for(UUID u2 : a.getCoOwnerIDs())
-				{
-					if(u2.equals(u))
-					{
-						System.out.println(a.getAccountName() + ", Balance: " );
-						System.out.printf("%.2d", a.getBalance());
-					}
-				}
-			}
-		}
-	}
+	
 
 	public void createClient()
-	{
-		
-		Scanner kIn = new Scanner(System.in);
-		
+	{	
 		System.out.println("Please your User Name: ");
 		
-		String userName = kIn.nextLine();
+		String userName = sc.getLine();
 		while(userName.length() == 0)
 		{
 			System.out.println("Please your User Name: ");
-			userName = kIn.nextLine();
+			userName = sc.getLine();
 		}
 		
 		System.out.println("Please Enter Password: ");
-		String password = kIn.nextLine();
+		String password = sc.getLine();
 		while(password.length() == 0)
 		{
 			System.out.println("Please your User Name: ");
-			password = kIn.nextLine();
+			password = sc.getLine();
 		}
 		
 		System.out.println("Please Enter your First Name: ");
-		String fName = kIn.nextLine();
+		String fName = sc.getLine();
 		while(password.length() == 0)
 		{
 			System.out.println("Please your User Name: ");
-			fName = kIn.nextLine();
+			fName = sc.getLine();
 		}
 		
 		System.out.println("Please Enter your Last Name: ");
-		String lName = kIn.nextLine();
+		String lName = sc.getLine();
 		while(password.length() == 0)
 		{
 			System.out.println("Please your User Name: ");
-			lName = kIn.nextLine();
+			lName = sc.getLine();
 		}
 		
 		System.out.println("Please Enter your Address: ");
-		String address = kIn.nextLine();
+		String address = sc.getLine();
 		while(password.length() == 0)
 		{
 			System.out.println("Please your User Name: ");
-			address = kIn.nextLine();
+			address = sc.getLine();
 		}
 		
 		boolean userValid = true;
@@ -346,7 +297,7 @@ public class ClientDriver {
 				{
 					userValid = false;
 					System.out.println("Username not available. Please enter a new name: ");
-					userName = kIn.nextLine();
+					userName = sc.getLine();
 				}
 			}			
 		}while(userValid == false);
@@ -360,16 +311,11 @@ public class ClientDriver {
 	
 	public void createAccount()
 	{
-		Scanner kIn = new Scanner(System.in);
-		
 		System.out.println("Name your account: ");
-		String accountName = kIn.nextLine();
+		String accountName = sc.getLine();
 		
 		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
-		accountList.add(a);
+		aM.addAccount(a);
 		currentClient.getOwnedAccounts().add(a.getACCOUNT_ID());
-
-		System.out.println(a.toString());
-		System.out.println(accountList.get(accountList.size() -1).toString());
 	}
 }
