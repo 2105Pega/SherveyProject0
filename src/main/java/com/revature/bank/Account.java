@@ -2,7 +2,6 @@ package com.revature.bank;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class Account implements Serializable {
@@ -70,23 +69,79 @@ public class Account implements Serializable {
 		this.balance = balance;
 		this.ownerID = ownerID;
 		this.accountName = accountName;
+		coOwnerIDs = new ArrayList<UUID>();
 	}
 	
-	public void transaction(double ammountChange)
+	public double withdraw(double ammountChange)
 	{
+		
+		if(ammountChange <= 0)
+		{
+			throw new IllegalArgumentException("Cannot Withdraw Negative or Zero Funds");
+		}
+		
 		balance = balance + ammountChange;
+		return balance;
+
+	}
+	
+	public double deposit (double ammountChange)
+	{
+		if(ammountChange <= 0)
+		{
+			throw new IllegalArgumentException("Cannot Deposit Negative or Zero Funds");
+		}
+		else if(this.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Sending Account Not Approved.");
+		}
+		
+		balance = balance + ammountChange;
+		return balance;
 	}
 	
 	public void transfer(Account a, double ammount)
 	{
-		this.transaction(-1 * ammount);
-		a.transaction(ammount);
+		if(ammount <= 0)
+		{
+			throw new IllegalArgumentException("Cannot Transfer Negative or Zero Funds");
+		}
+		else if(a == null)
+		{
+			throw new NullPointerException("Cannot Transfer to target Account. ID Not Found in System");
+		}
+		else if(a.getACCOUNT_ID() == this.getACCOUNT_ID())
+		{
+			throw new IllegalArgumentException("Cannot Transfer To Same Account");
+		}
+		else if(a.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Target Account Not Approved.");
+		}
+		else if(this.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Sending Account Not Approved.");
+		}
+		
+		
+		
+		this.withdraw(ammount);
+		a.deposit(ammount);
+
 	}
 
+	public void addCOwner(UUID coOwnerID)
+	{
+		if(coOwnerID == null)
+			throw new NullPointerException("Co-Owner ID is Null");
+		
+		coOwnerIDs.add(coOwnerID);
+	}
+	
 	@Override
 	public String toString() {
 		return "Account [accountName=" + accountName + ", status=" + status + ", ACCOUNT_ID=" + ACCOUNT_ID + ", balance=" + balance + ", ownerID="
-				+ ownerID + ", coOwnerIDs=" + Arrays.toString(coOwnerIDs) + "]";
+				+ ownerID + ", coOwnerIDs=" + coOwnerIDs.toString() + "]";
 	}
 	
 	

@@ -58,4 +58,12 @@ public class Client implements Serializable{
 				+ lastName + ", address=" + address + ", clientID=" + clientID + "]";
 	}
 	
+	public boolean equals(Client c)
+	{
+		if(c.getClientID() == this.clientID)
+			return true;
+		else
+			return false;
+	}
+	
 }

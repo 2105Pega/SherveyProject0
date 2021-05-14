@@ -8,11 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.UUID;
 
 import com.revature.bank.Account;
-import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
+import com.revature.bank.SavePacket;
 
 public class BankDriver {
 	
@@ -22,104 +21,85 @@ public class BankDriver {
 	
 	public static void main(String args[])
 	{
-		ArrayList<Client> clientList = getClientList();
-		ArrayList<Account> accountList = getAccountList();
+		
+		SavePacket s = loadSave();
+		ArrayList<Client> clientList;
+		ArrayList<Account> accountList;
+		
+		if(s != null)
+		{
+			clientList = s.getClients();
+			accountList = s.getAccounts();
+		}
+		else
+		{
+			clientList = new ArrayList<Client>();
+			accountList = new ArrayList<Account>();
+
+		}
 		clientDriver = new ClientDriver(clientList, accountList);
 		
 		menu();
 		
-		saveClients(clientList);
+		save(clientList, accountList);
 		//saveAccounts(accountList);
 	}
 
 	
-	private static void saveAccounts(ArrayList<Account> accountList) {
-		File accountFile = new File("accounts.txt");
+	private static void save(ArrayList<Client> clientList, ArrayList<Account> accountList) {
+		File accountFile = new File("Information.txt");
 		
+		try {
 		if(!accountFile.exists())
-			accountFile.createNewFile();
+			accountFile.createNewFile(); //IOexception
 		
-		FileOutputStream fos = new FileOutputStream(accountFile);
+		FileOutputStream fos = new FileOutputStream(accountFile); //FileNotFoundException
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		
-		for(Account a : accountList)
-			oos.writeObject(a);
+		SavePacket save = new SavePacket(accountList, clientList);
+		
+		oos.writeObject(save);
 		
 		oos.close();
 		fos.close();
-		
-	}
-
-
-	private static void saveClients(ArrayList<Client> clientList) {
-		File clientsFile = new File("clients.txt");
-		
-		if(!clientsFile.exists())
-			clientsFile.createNewFile();
-		
-		FileOutputStream fos = new FileOutputStream(clientsFile);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		
-		for(Client c : clientList)
-			oos.writeObject(c);
-		
-		oos.close();
-		fos.close();
-	}
-
-
-	private static ArrayList<Account> getAccountList() 
-	{
-		File accountFile = new File("accounts.txt");
-		
-		if(!accountFile.exists())
+		}
+		catch (IOException e)
 		{
-			return new ArrayList<Account>();
+			System.out.println("Warning: Exception Occured During Save. Information May Be Lost.");
+			System.out.println(e.getMessage());
 		}
 		
-		FileInputStream fis = new FileInputStream(accountFile);
+	}
+
+	private static SavePacket loadSave() 
+	{
+		File accountFile = new File("Information.txt");
+		
+		try {
+		if(!accountFile.exists())
+			accountFile.createNewFile(); //IOexception
+		
+		FileInputStream fis = new FileInputStream(accountFile); //FileNotFoundException
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		
-		Account a;
-		ArrayList<Account> accountList = new ArrayList<Account>();
-		
-		while(fis.available() > 0)
-		{
-			a = (Account) ois.readObject();
-			accountList.add(a);
-		}
+		SavePacket save = (SavePacket) ois.readObject();
 		
 		ois.close();
 		fis.close();
-		
-		return accountList;
-		
-	}
-
-
-	private static ArrayList<Client> getClientList()  {
-		File clientFile = new File("clients.txt");
-		
-		if(!clientFile.exists())
-		{
-			return new ArrayList<Client>();
+		return save;
 		}
-		
-		FileInputStream fis = new FileInputStream(clientFile);
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		
-		Client c;
-		ArrayList<Client> clientList = new ArrayList<Client>();
-		
-		while(fis.available() > 0)
+		catch (IOException e)
 		{
-			c = (Client) ois.readObject();
-			clientList.add(c);
+			System.out.println("Warning: Exception Occured During Load. Account and Client Lists Could Not Be Imported.");
+			System.out.println(e.getMessage());
 		}
-		
-		return clientList;
+		catch (ClassNotFoundException e)
+		{
+			System.out.println("Warning: Exception Occured During Load. Could Not Read Save File Correctly.");
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
-
 
 	public static void menu()
 	{

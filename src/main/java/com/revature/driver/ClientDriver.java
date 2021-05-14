@@ -5,7 +5,6 @@ import java.util.Scanner;
 import java.util.UUID;
 
 import com.revature.bank.Account;
-import com.revature.bank.AccountManagment;
 import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
 
@@ -24,10 +23,9 @@ public class ClientDriver {
 	
 	public Account selectAccount(UUID AccountID) 
 	{
-		
 		for(Account a : accountList)
 		{
-			if(a.getOwnerID() == AccountID)
+			if(a.getOwnerID().compareTo(AccountID) == 0);
 			{
 				return a;
 			}
@@ -54,7 +52,7 @@ public class ClientDriver {
 			return -1;
 		}
 		
-		ClientMenu();
+		clientMenu();
 		
 		return 1;
 	}
@@ -66,7 +64,13 @@ public class ClientDriver {
 		Scanner kIn = new Scanner(System.in);
 		
 		do {
-			displayClientMenu();
+			
+			System.out.println("Welcome " + currentClient.getUsername() + "!\nPlease select one of the follow options.");
+			System.out.println("1.) Accounts Summary");
+			System.out.println("2.) Access Account");
+			System.out.println("3.) Apply for Account");
+			System.out.println("4.) Exit");
+			
 			selection = kIn.nextInt();
 			kIn.nextLine();
 			
@@ -76,19 +80,48 @@ public class ClientDriver {
 				accountsSummary();
 				break;
 			case 2:
-				String AID = kIn.nextLine();
-				Account a = selectAccount(UUID.fromString(AID));
+				System.out.println("Enter Account ID");
+				String id = kIn.nextLine();
+				
+				Account a = selectAccount(UUID.fromString(id));
 				
 				if(a == null)
 				{
-					System.out.println("Error, Account ID not found. Please try again.");
+					System.out.println("Account ID not in System.");
+					break;
+				}
+				
+				if(a.getACCOUNT_ID().compareTo(currentClient.getClientID()) == 0)
+				{
+					try {
+						manageAccount(a);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
 				}
 				else
 				{
-					manageAccount(a);
+					for(UUID u : a.getCoOwnerIDs())
+					{
+						if(u.compareTo(currentClient.getClientID()) == 0)
+						{
+							try {
+								manageAccount(a);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							break;
+						}
+					}
+					
 				}
+				System.out.println("You are not a registered Owner or Co-Owner. Access Denied.");
 				break;
 			case 3:
+				createAccount();
 				break;
 			case 4:
 				return;
@@ -102,7 +135,7 @@ public class ClientDriver {
 		kIn.close();
 	}
 
-	private void manageAccount(Account a) {
+	private void manageAccount(Account a) throws Exception {
 		Scanner kIn = new Scanner(System.in);
 		
 		System.out.println("1.) Summarize Account \n2.) Withdraw \n.3) Deposist \n4.) Transfer Funds\n5.)Add co-owner \n6.) Exit");
@@ -113,60 +146,82 @@ public class ClientDriver {
 		{
 			switch (selection)
 			{
-			case 1:
-				System.out.println(a.getAccountName());
-				System.out.printf("Balance: " + "%.2d", a.getBalance());
-				System.out.println("Account ID: " + a.getACCOUNT_ID() + "\n---------------------------------");
+			case 1: //Sumaraized Currently Selected Account
+				accountSummary(a);
 				break;
-			case 2:
+			case 2: //Withdars Money from Current Account
 				int withdrawValue = kIn.nextInt();
 				kIn.nextLine();
 				
 				if(withdrawValue < 0)
-					System.out.println("Error: Enter value greater then 0 for transaction to go through.");
+					throw new IllegalArgumentException("Cannot Withdraw Negative Funds");
 				else
-					a.transaction(-1 * withdrawValue);
+				{
+					try {
+					a.withdraw(withdrawValue);
+					}
+					catch (IllegalArgumentException e){
+						System.out.println(e.getMessage());
+					}
+					catch (IllegalStateException e)
+					{
+						System.out.println(e.getMessage());
+					}
+					if(a.getBalance() < 0)
+						System.out.println("Warning! You have overdrawn.");
+					System.out.print("Balance is now: " );
+					System.out.printf("Balance: " + "%.2d \n", a.getBalance());
+				}
 				break;
-			case 3:
+			case 3: //Deposits money to current Account
 				int depositValue = kIn.nextInt();
 				kIn.nextLine();
-				
-				if(depositValue < 0)
-					System.out.println("Error: Enter value greater then 0 for transaction to go through.");
-				else
-					a.transaction(depositValue);
+				try {
+				a.deposit(depositValue);
+				}
+				catch (IllegalArgumentException e){
+					System.out.println(e.getMessage());
+				}
+				catch (IllegalStateException e)
+				{
+					System.out.println(e.getMessage());
+				}
 				break;
-			case 4:
+			case 4: //Transfers Money from Current Account to Target Account
 				int transferValue = kIn.nextInt();
 				kIn.nextLine();
 				
-				if(transferValue < 0)
-					System.out.println("Error: Enter value greater then 0 for transaction to go through.");
-				else
-				{
-					String transferAccountID = kIn.nextLine();
-					Account tAccount = selectAccount(UUID.fromString(transferAccountID));
-					
-					if(tAccount == null)
-					{
-						System.out.println("Error: ID for transfer target not found.");
-					}
-					else
-					{
-						a.transfer(tAccount, transferValue);
-					}
-					
+				System.out.println("Enter target account's ID: ");
+				String transferAccountID = kIn.nextLine();
+				Account tAccount = selectAccount(UUID.fromString(transferAccountID));
+				
+				try {
+				a.transfer(tAccount, transferValue);
 				}
+				catch (IllegalArgumentException e) {
+					System.out.println(e.getMessage());
+				}
+				catch (NullPointerException e){
+					System.out.println(e.getMessage());
+				}
+				catch (IllegalStateException e) {
+					System.out.println(e.getMessage());
+				}
+					
 				break;
-			case 5:
-				System.out.println("Please Enter co-owner ID: ");
-				String ID = kIn.nextLine();
-				UUID UserID = UUID.fromString(ID);
+			case 5: //Adds a Co-Owner to Current Account
+				System.out.println("Please Enter co-owner User Name: ");
+				String userName = kIn.nextLine();
 				
 				for(Client c : clientList)
 				{
-					if(c.getClientID() == UserID)
-						a.getCoOwnerIDs().add(UserID);
+					if(userName.equals(c.getUsername()))
+					{
+						a.getCoOwnerIDs().add(c.getClientID());
+						System.out.println("Added " + userName);
+					}
+					else
+						System.out.println("Username not in System.");
 				}
 				
 				break;
@@ -177,11 +232,18 @@ public class ClientDriver {
 				break;
 			}
 		}while(selection != 6);
+		kIn.close();
+	}
+
+	private void accountSummary(Account a) {
+		System.out.println(a.getAccountName());
+		System.out.printf("Balance: " + "%.2d \n", a.getBalance());
+		System.out.println("Account ID: " + a.getACCOUNT_ID() + "\n---------------------------------");
 	}
 
 	private void accountsSummary() 
 	{
-		System.out.println("Accounts you own.");
+		System.out.println("Accounts you own:");
 		for(UUID u : currentClient.getOwnedAccounts())
 		{
 			for(Account a : accountList)
@@ -202,7 +264,7 @@ public class ClientDriver {
 			{
 				for(UUID u2 : a.getCoOwnerIDs())
 				{
-					if(u2 == u)
+					if(u2.compareTo(u) == 0)
 					{
 						System.out.println(a.getAccountName() + ", Balance: " );
 						System.out.printf("%.2d", a.getBalance());
@@ -212,24 +274,6 @@ public class ClientDriver {
 		}
 	}
 
-	private void displayClientMenu() 
-	{
-		String menu[] = new String[5];
-		menu[0] = "Welcome " + currentClient.getUsername() + "!\nPlease select one of the follow options.";
-		menu[1] = "1.) Accounts Summary";
-		menu[2] = "2.) Access Account";
-		menu[3] = "3.) Apply for Account";
-		menu[4] = "4.) Exit";
-		
-		for(String s : menu)
-			System.out.println(s);
-	}
-	
-	public void logOut()
-	{
-		
-	}
-	
 	public void createClient()
 	{
 		
