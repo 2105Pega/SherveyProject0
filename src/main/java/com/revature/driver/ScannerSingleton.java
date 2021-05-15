@@ -31,6 +31,15 @@ public class ScannerSingleton {
 		return x;
 	}
 	
+	public double getDouble()
+	{
+		while(!kIn.hasNextDouble())
+			kIn.nextLine();
+		double x = kIn.nextDouble();
+		kIn.nextLine();
+		return x;
+	}
+	
 	public String getLine()
 	{
 		return kIn.nextLine();

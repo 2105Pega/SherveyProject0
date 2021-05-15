@@ -100,4 +100,66 @@ public class AccountManager {
 		}
 		return s;
 	}
+
+	public double withdraw(Account a, double ammountChange)
+	{
+		if(ammountChange <= 0)
+		{
+			throw new IllegalArgumentException("Cannot Withdraw Negative or Zero Funds");
+		}
+		else if(a.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Sending Account Not Approved.");
+		}
+		
+		a.setBalance((a.getBalance() - ammountChange));
+		return a.getBalance();
+	}
+	
+	public double deposit(Account a, double ammountChange)
+	{
+		if(ammountChange <= 0)
+		{
+			throw new IllegalArgumentException("Cannot Withdraw Negative or Zero Funds");
+		}
+		else if(a.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Sending Account Not Approved.");
+		}
+		
+		a.setBalance((a.getBalance() + ammountChange));
+		return a.getBalance();
+	}
+	
+	public void transfer(Account sender, Account target, double ammount)
+	{
+		if(ammount <= 0)
+		{
+			throw new IllegalArgumentException("Cannot Transfer Negative or Zero Funds");
+		}
+		else if(sender == null)
+		{
+			throw new NullPointerException("Cannot Transfer from sending Account. ID Not Found in System");
+		}
+		else if(target == null)
+		{
+			throw new NullPointerException("Cannot Transfer to target Account. ID Not Found in System");
+		}
+		else if(target.getACCOUNT_ID().equals(sender.getACCOUNT_ID()))
+		{
+			throw new IllegalArgumentException("Cannot Transfer To Same Account");
+		}
+		else if(sender.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Target Account Not Approved.");
+		}
+		else if(target.getStatus() != AccountStatus.APPROVED)
+		{
+			throw new IllegalStateException("Sending Account Not Approved.");
+		}
+		
+		this.withdraw(sender, ammount);
+		this.deposit(target, ammount);
+	}
+
 }

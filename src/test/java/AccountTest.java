@@ -37,57 +37,6 @@ class AccountTest {
 	}
 	
 	@Test
-	public void testWithdraw()
-	{
-		aList.get(0).withdraw(100);
-		assertEquals(900, aList.get(0).getBalance());
-		
-		Assertions.assertThrows(IllegalArgumentException.class,() -> aList.get(0).withdraw(-100));
-		Assertions.assertThrows(IllegalArgumentException.class,() -> aList.get(0).withdraw(0));
-		
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(1).withdraw(100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(2).withdraw(100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(3).withdraw(100));
-	}
-	
-	@Test
-	public void testDeposit()
-	{
-		aList.get(0).deposit(100);
-		assertEquals(1100, aList.get(0).getBalance());
-		
-		Assertions.assertThrows(IllegalArgumentException.class,() -> aList.get(0).deposit(-100));
-		Assertions.assertThrows(IllegalArgumentException.class,() -> aList.get(0).deposit(0));
-		
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(1).deposit(100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(2).deposit(100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(3).deposit(100));
-	}
-	
-	@Test
-	public void testTransfer()
-	{
-		aList.get(0).transfer(aList.get(4), 500);
-		assertEquals(500, aList.get(0).getBalance());
-		assertEquals(1500, aList.get(4).getBalance());
-		
-		Assertions.assertThrows(IllegalArgumentException.class,() -> aList.get(0).transfer(aList.get(4), -500));
-		Assertions.assertThrows(IllegalArgumentException.class,() -> aList.get(0).transfer(aList.get(4), 0));
-		
-		Assertions.assertThrows(NullPointerException.class,() -> aList.get(0).transfer(null, 100));
-		//IllegalStateException
-		
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(1).transfer(aList.get(0), 100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(2).transfer(aList.get(0), 100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(3).transfer(aList.get(0), 100));
-		
-		
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(0).transfer(aList.get(1), 100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(0).transfer(aList.get(2), 100));
-		Assertions.assertThrows(IllegalStateException.class,() -> aList.get(0).transfer(aList.get(3), 100));
-	}
-	
-	@Test
 	public void testAddCoOwner()
 	{
 		UUID u = UUID.randomUUID();

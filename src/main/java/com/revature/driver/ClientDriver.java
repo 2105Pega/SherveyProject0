@@ -10,11 +10,11 @@ import com.revature.bank.Client;
 
 public class ClientDriver {
 
-	private ArrayList<Client> clientList;
+	protected ArrayList<Client> clientList;
 	
 	private Client currentClient;
-	static ScannerSingleton sc = new ScannerSingleton();
-	AccountManager aM;
+	protected static ScannerSingleton sc = new ScannerSingleton();
+	protected AccountManager aM;
 	
 	public ClientDriver(ArrayList<Client> clientList, AccountManager aM)
 	{
@@ -142,7 +142,7 @@ public class ClientDriver {
 
 	}
 
-	private void manageAccount(Account a) throws Exception {
+	protected void manageAccount(Account a) throws Exception {
 		int selection = -1;
 		
 		do
@@ -156,10 +156,10 @@ public class ClientDriver {
 				break;
 				
 			case 2: //Withdars Money from Current Account
-				int withdrawValue = sc.getInt();
-
+				double withdrawValue = sc.getDouble();
+				
 				try {
-				a.withdraw(withdrawValue);
+				aM.withdraw(a, withdrawValue);
 				}
 				catch (IllegalArgumentException e){
 					System.out.println(e.getMessage());
@@ -168,18 +168,13 @@ public class ClientDriver {
 				{
 					System.out.println(e.getMessage());
 				}
-				if(a.getBalance() < 0)
-					System.out.println("Warning! You have overdrawn.");
-				System.out.print("Balance is now: " );
-				System.out.printf("Balance: " + "%.2f \n", a.getBalance());
-
 				break;
 				
 			case 3: //Deposits money to current Account
-				int depositValue = sc.getInt();
+				double depositValue = sc.getDouble();
 				
 				try {
-				a.deposit(depositValue);
+				aM.deposit(a, depositValue);
 				}
 				catch (IllegalArgumentException e){
 					System.out.println(e.getMessage());
@@ -191,14 +186,14 @@ public class ClientDriver {
 				break;
 				
 			case 4: //Transfers Money from Current Account to Target Account
-				int transferValue = sc.getInt();
+				double transferValue = sc.getDouble();
 				
 				System.out.println("Enter target account's ID: ");
 				String transferAccountID = sc.getLine();
 				Account tAccount = aM.getAccountByAccountID(UUID.fromString(transferAccountID));
 				
 				try {
-				a.transfer(tAccount, transferValue);
+				aM.transfer(a, tAccount, transferValue);
 				}
 				catch (IllegalArgumentException e) {
 					System.out.println(e.getMessage());
@@ -242,15 +237,14 @@ public class ClientDriver {
 		}while(selection != 6);
 	}
 	
-
 	public void createClient()
 	{	
-		System.out.println("Please your User Name: ");
+		System.out.println("Please enter User Name: ");
 		
 		String userName = sc.getLine();
 		while(userName.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
+			System.out.println("Please enter User Name: ");
 			userName = sc.getLine();
 		}
 		
@@ -258,31 +252,31 @@ public class ClientDriver {
 		String password = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
+			System.out.println("Please Enter Password: ");
 			password = sc.getLine();
 		}
 		
-		System.out.println("Please Enter your First Name: ");
+		System.out.println("Please Enter First Name: ");
 		String fName = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
+			System.out.println("Please Enter First Name: ");
 			fName = sc.getLine();
 		}
 		
-		System.out.println("Please Enter your Last Name: ");
+		System.out.println("Please Enter Last Name: ");
 		String lName = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
+			System.out.println("Please Enter Last Name: ");
 			lName = sc.getLine();
 		}
 		
-		System.out.println("Please Enter your Address: ");
+		System.out.println("Please Enter Address: ");
 		String address = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
+			System.out.println("Please Enter Address: ");
 			address = sc.getLine();
 		}
 		
@@ -311,7 +305,7 @@ public class ClientDriver {
 	
 	public void createAccount()
 	{
-		System.out.println("Name your account: ");
+		System.out.println("Name Account: ");
 		String accountName = sc.getLine();
 		
 		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());

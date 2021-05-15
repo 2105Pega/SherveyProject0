@@ -21,7 +21,7 @@ public class Account implements Serializable {
 
 	public double getBalance() {return balance;}
 
-	public void setBalance(int balance) {this.balance = balance;}
+	public void setBalance(double balance) {this.balance = balance;}
 
 	public UUID getOwnerID() {return ownerID;}
 
@@ -72,68 +72,6 @@ public class Account implements Serializable {
 		coOwnerIDs = new ArrayList<UUID>();
 	}
 	
-	public double withdraw(double ammountChange)
-	{
-		
-		if(ammountChange <= 0)
-		{
-			throw new IllegalArgumentException("Cannot Withdraw Negative or Zero Funds");
-		}
-		else if(this.getStatus() != AccountStatus.APPROVED)
-		{
-			throw new IllegalStateException("Sending Account Not Approved.");
-		}
-		
-		balance = balance - ammountChange;
-		return balance;
-
-	}
-	
-	public double deposit (double ammountChange)
-	{
-		if(ammountChange <= 0)
-		{
-			throw new IllegalArgumentException("Cannot Deposit Negative or Zero Funds");
-		}
-		else if(this.getStatus() != AccountStatus.APPROVED)
-		{
-			throw new IllegalStateException("Sending Account Not Approved.");
-		}
-		
-		balance = balance + ammountChange;
-		return balance;
-	}
-	
-	public void transfer(Account a, double ammount)
-	{
-		if(ammount <= 0)
-		{
-			throw new IllegalArgumentException("Cannot Transfer Negative or Zero Funds");
-		}
-		else if(a == null)
-		{
-			throw new NullPointerException("Cannot Transfer to target Account. ID Not Found in System");
-		}
-		else if(a.getACCOUNT_ID() == this.getACCOUNT_ID())
-		{
-			throw new IllegalArgumentException("Cannot Transfer To Same Account");
-		}
-		else if(a.getStatus() != AccountStatus.APPROVED)
-		{
-			throw new IllegalStateException("Target Account Not Approved.");
-		}
-		else if(this.getStatus() != AccountStatus.APPROVED)
-		{
-			throw new IllegalStateException("Sending Account Not Approved.");
-		}
-		
-		
-		
-		this.withdraw(ammount);
-		a.deposit(ammount);
-
-	}
-
 	public void addCOwner(UUID coOwnerID)
 	{
 		if(coOwnerID == null)
@@ -147,7 +85,5 @@ public class Account implements Serializable {
 		return "Account [accountName=" + accountName + ", status=" + status + ", ACCOUNT_ID=" + ACCOUNT_ID + ", balance=" + balance + ", ownerID="
 				+ ownerID + ", coOwnerIDs=" + coOwnerIDs.toString() + "]";
 	}
-	
-	
-	
+
 }
