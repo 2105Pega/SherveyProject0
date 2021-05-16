@@ -18,6 +18,7 @@ public class BankDriver {
 	
 	//TODO: Fold Employee, Client, and Account into a set of 3 entries in 1 ArrayList to r/w them in all at once.
 	static ClientDriver clientDriver;
+	static EmployeeDriver employeeDriver;
 	static ScannerSingleton sc = new ScannerSingleton();
 	
 	public static void main(String args[])
@@ -40,6 +41,7 @@ public class BankDriver {
 		
 		AccountManager accountManager = new AccountManager(accountList);
 		clientDriver = new ClientDriver(clientList, accountManager);
+		employeeDriver = new EmployeeDriver(clientList, accountManager);
 		
 		menu();
 		
@@ -108,6 +110,9 @@ public class BankDriver {
 		{
 			displayMainMenu();
 			selection = sc.getInt();
+			String username;
+			String password;
+			
 			
 			System.out.println(selection);
 			
@@ -118,11 +123,11 @@ public class BankDriver {
 				System.out.println("Client Log In Selected.");
 				
 				System.out.println("Enter Username: ");
-				String userName = sc.getLine();
+				username = sc.getLine();
 				System.out.println("Enter Password: ");
-				String password = sc.getLine();
+				password = sc.getLine();
 				
-				clientDriver.logIn(userName, password);
+				clientDriver.logIn(username, password);
 				
 				break;
 			case 2:
@@ -130,8 +135,17 @@ public class BankDriver {
 				clientDriver.createClient();
 				break;
 			case 3:
-				//Go to EmployeeManager and validate login.
 				System.out.println("Employee Log In Selected.");
+				
+				System.out.println("Employee In Selected.");
+				
+				System.out.println("Enter Username: ");
+				username = sc.getLine();
+				System.out.println("Enter Password: ");
+				password = sc.getLine();
+				
+				employeeDriver.logIn(username, password);
+				
 				break;
 			case 4:
 				System.out.println("Exiting.");

@@ -98,9 +98,11 @@ public class EmployeeDriver extends ClientDriver{
 				break;
 				
 			case 4:
-				String user, pass;
 				
+				String user, pass;
+				System.out.println("Enter Username: ");
 				user = sc.getLine();
+				System.out.println("Enter Password: ");
 				pass = sc.getLine();
 				
 				super.logIn(user, pass);
@@ -135,11 +137,15 @@ public class EmployeeDriver extends ClientDriver{
 			{
 			case 1:
 				a.setStatus(AccountStatus.APPROVED);
+				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
 				break;
-			case 2:a.setStatus(AccountStatus.DENIED);
+			case 2:
+				a.setStatus(AccountStatus.DENIED);
+				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
 				break;
 			case 3:
 				a.setStatus(AccountStatus.CANCELED);
+				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
 				break;
 			case 4:
 				return;
@@ -148,9 +154,8 @@ public class EmployeeDriver extends ClientDriver{
 			}
 		} while (selection != 4);
 		
-		
 	}
-
+/*
 	private void modifyClientMenu(Client c) {
 		System.out.println("1.) Change Username");
 		System.out.println("2.) Change Password");
@@ -188,4 +193,5 @@ public class EmployeeDriver extends ClientDriver{
 		
 		
 	}
+	*/
 }

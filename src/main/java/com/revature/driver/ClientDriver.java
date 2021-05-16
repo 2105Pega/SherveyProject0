@@ -117,23 +117,6 @@ public class ClientDriver {
 				break;
 			case 4:
 				return;
-			case 555:
-				System.out.println("Current Client: " + currentClient.toString());
-				System.out.println("Client List: ");
-					
-				for(Client c : clientList)
-						System.out.println(c.toString());
-				
-				System.out.println("---------------------------------------------");
-				System.out.println("Account List: ");
-				
-				for(Account a2 : aM.getAllAccounts())
-					System.out.println(a2.toString());
-				
-				System.out.println("---------------------------------------------");
-
-				
-				break;
 			default:
 				break;
 			}
@@ -156,6 +139,7 @@ public class ClientDriver {
 				break;
 				
 			case 2: //Withdars Money from Current Account
+				System.out.println("Ammount to Withdraw: ");
 				double withdrawValue = sc.getDouble();
 				
 				try {
@@ -171,6 +155,8 @@ public class ClientDriver {
 				break;
 				
 			case 3: //Deposits money to current Account
+				
+				System.out.println("Ammount to Deposit: ");
 				double depositValue = sc.getDouble();
 				
 				try {
@@ -186,9 +172,10 @@ public class ClientDriver {
 				break;
 				
 			case 4: //Transfers Money from Current Account to Target Account
+				System.out.println("Ammount to Transfer: ");
 				double transferValue = sc.getDouble();
 				
-				System.out.println("Enter target account's ID: ");
+				System.out.println("Enter Target Account's ID: ");
 				String transferAccountID = sc.getLine();
 				Account tAccount = aM.getAccountByAccountID(UUID.fromString(transferAccountID));
 				
@@ -224,10 +211,6 @@ public class ClientDriver {
 				
 			case 6:
 				return;
-				
-			case 1001:
-				a.setStatus(AccountStatus.APPROVED);
-				break;
 				
 			default:
 				break;
