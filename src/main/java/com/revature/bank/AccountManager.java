@@ -14,11 +14,33 @@ public class AccountManager {
 	
 	public void addAccount(Account a)
 	{
+		if(a == null)
+			throw new NullPointerException();
+		else if(this.getAccountByAccountID(a.getACCOUNT_ID()) != null)
+			throw new IllegalArgumentException();
+		
 		accountList.add(a);
 	}
 
+	public void removeAccounts()
+	{
+		ArrayList<Account> toRemove = new ArrayList<Account>();
+		
+		for(Account a : accountList)
+		{
+			if(a.getStatus() == AccountStatus.CANCELED || a.getStatus() == AccountStatus.DENIED)
+			{
+				toRemove.add(a);
+			}
+		}
+		accountList.removeAll(toRemove);
+	}
+	
 	public Account getAccountByAccountID(UUID u)
 	{
+		if(u == null)
+			throw new NullPointerException();
+		
 		for(Account a : accountList)
 		{
 			if(a.getACCOUNT_ID().equals(u))
@@ -31,6 +53,9 @@ public class AccountManager {
 
 	public ArrayList<Account> getAccountsByCoOwnerID(UUID u)
 	{
+		if(u == null)
+			throw new NullPointerException();
+		
 		ArrayList<Account> aL = new ArrayList<Account>();
 		for(Account a : accountList)
 		{
@@ -55,7 +80,7 @@ public class AccountManager {
 		ArrayList<Account> aL = new ArrayList<Account>();
 		for(Account a : accountList)
 		{
-			if(a.getACCOUNT_ID().equals(u));
+			if(a.getOwnerID().equals(u))
 			{
 				aL.add(a);
 			}
@@ -107,9 +132,13 @@ public class AccountManager {
 		{
 			throw new IllegalArgumentException("Cannot Withdraw Negative or Zero Funds");
 		}
+		else if(a == null)
+		{
+			throw new NullPointerException();
+		}
 		else if(a.getStatus() != AccountStatus.APPROVED)
 		{
-			throw new IllegalStateException("Sending Account Not Approved.");
+			throw new IllegalStateException("Account Not Approved.");
 		}
 		
 		a.setBalance((a.getBalance() - ammountChange));
@@ -122,9 +151,13 @@ public class AccountManager {
 		{
 			throw new IllegalArgumentException("Cannot Withdraw Negative or Zero Funds");
 		}
+		else if(a == null)
+		{
+			throw new NullPointerException();
+		}
 		else if(a.getStatus() != AccountStatus.APPROVED)
 		{
-			throw new IllegalStateException("Sending Account Not Approved.");
+			throw new IllegalStateException("Account Not Approved.");
 		}
 		
 		a.setBalance((a.getBalance() + ammountChange));
@@ -141,7 +174,7 @@ public class AccountManager {
 		{
 			throw new NullPointerException("Cannot Transfer from sending Account. ID Not Found in System");
 		}
-		else if(target == null)
+		else if(target == null) 
 		{
 			throw new NullPointerException("Cannot Transfer to target Account. ID Not Found in System");
 		}
