@@ -45,3 +45,14 @@
 2021-05-17 11:25:27,265 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
 2021-05-17 11:25:35,873 [main] INFO  com.revature.driver.BankDriver - Starting Save.
 2021-05-17 11:25:35,875 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-17 11:53:05,993 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:53:20,095 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:53:33,689 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with as as
+2021-05-17 11:53:37,185 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with  2
+2021-05-17 11:53:52,869 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:53:58,081 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with as s
+2021-05-17 11:54:22,986 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:54:29,413 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:54:42,424 [main] INFO  com.revature.driver.ClientDriver - Loged in as Client [userName=Ash, password=Main, firstName=No, lastName=Brain, address=B Site, clientID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1]
+2021-05-17 11:55:25,239 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:55:36,506 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with asd Lind Nal

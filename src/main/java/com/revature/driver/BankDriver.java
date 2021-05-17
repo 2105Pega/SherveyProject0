@@ -18,7 +18,6 @@ import com.revature.bank.SavePacket;
 
 public class BankDriver {
 	
-	
 	//TODO: Fold Employee, Client, and Account into a set of 3 entries in 1 ArrayList to r/w them in all at once.
 	static ClientDriver clientDriver;
 	static EmployeeDriver employeeDriver;
@@ -164,7 +163,6 @@ public class BankDriver {
 			}
 		} while (selection != 4);
 	}
-
 
 	private static void displayMainMenu() 
 	{
