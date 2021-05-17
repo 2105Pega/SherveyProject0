@@ -3,6 +3,9 @@ package com.revature.driver;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.bank.Account;
 import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
@@ -15,6 +18,7 @@ public class ClientDriver {
 	private Client currentClient;
 	protected static ScannerSingleton sc = new ScannerSingleton();
 	protected AccountManager aM;
+	private static final Logger logger = LogManager.getLogger(ClientDriver.class);
 	
 	public ClientDriver(ArrayList<Client> clientList, AccountManager aM)
 	{
@@ -31,11 +35,13 @@ public class ClientDriver {
 			{
 				currentClient = c;
 				validLogIn = true;
+				logger.info("Loged in as " + c.toString());
 			}
 		}
 		
 		if(validLogIn == false)
 		{
+			logger.warn("Log in Failed with " + userName + " " + password);
 			return -1;
 		}
 		
@@ -74,6 +80,7 @@ public class ClientDriver {
 				}
 				catch(IllegalArgumentException e)
 				{
+					logger.error("caught IllegalArgumentException in clientManager, Account Access " + e.getMessage());
 					System.out.println("ID invalid. Please try again.");
 				}
 				
@@ -88,7 +95,7 @@ public class ClientDriver {
 					try {
 						manageAccount(a);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						logger.warn("error in ClientManager, Access Account: " + e.getMessage());
 						e.printStackTrace();
 					}
 					break;
@@ -146,10 +153,12 @@ public class ClientDriver {
 				aM.withdraw(a, withdrawValue);
 				}
 				catch (IllegalArgumentException e){
+					logger.error("caught IllegalArgumentException in clientManager, Withdraw " + e.getMessage());
 					System.out.println(e.getMessage());
 				}
 				catch (IllegalStateException e)
 				{
+					logger.error("caught IllegalStateException in clientManager, Withdraw " + e.getMessage());
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -163,10 +172,12 @@ public class ClientDriver {
 				aM.deposit(a, depositValue);
 				}
 				catch (IllegalArgumentException e){
+					logger.error("caught IllegalArgumentException in clientManager, Deposit " + e.getMessage());
 					System.out.println(e.getMessage());
 				}
 				catch (IllegalStateException e)
 				{
+					logger.error("caught IllegalStateException in clientManager, Deposit " + e.getMessage());
 					System.out.println(e.getMessage());
 				}
 				break;
@@ -183,12 +194,15 @@ public class ClientDriver {
 				aM.transfer(a, tAccount, transferValue);
 				}
 				catch (IllegalArgumentException e) {
+					logger.error("caught IllegalArgumentException in clientManager, Transfer " + e.getMessage());
 					System.out.println(e.getMessage());
 				}
 				catch (NullPointerException e){
+					logger.error("caught NullPointerException in clientManager, Transfer " + e.getMessage());
 					System.out.println(e.getMessage());
 				}
 				catch (IllegalStateException e) {
+					logger.error("caught IllegalStateException in clientManager, Transfer " + e.getMessage());
 					System.out.println(e.getMessage());
 				}	
 				break;
@@ -278,12 +292,11 @@ public class ClientDriver {
 				}
 			}			
 		}while(userValid == false);
-		
+	
 		Client c = new Client(userName, password, fName, lName, address);
 		clientList.add(c);
 		
-		for(Client c2 : clientList)
-			System.out.println(c2.toString());
+		logger.info("New Client created: " + c.toString());
 	}
 	
 	public void createAccount()
@@ -294,5 +307,6 @@ public class ClientDriver {
 		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
 		aM.addAccount(a);
 		currentClient.getOwnedAccounts().add(a.getACCOUNT_ID());
+		logger.info("New Account created: " + a.toString());
 	}
 }

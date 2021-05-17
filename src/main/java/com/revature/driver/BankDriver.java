@@ -8,6 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.bank.Account;
 import com.revature.bank.AccountManager;
 import com.revature.bank.Client;
@@ -20,9 +23,11 @@ public class BankDriver {
 	static ClientDriver clientDriver;
 	static EmployeeDriver employeeDriver;
 	static ScannerSingleton sc = new ScannerSingleton();
-	
+	private static final Logger logger = LogManager.getLogger(BankDriver.class);
 	public static void main(String args[])
 	{
+		
+		logger.info("Starting Main Driver.");
 		
 		SavePacket s = loadSave();
 		ArrayList<Client> clientList;
@@ -30,6 +35,7 @@ public class BankDriver {
 		
 		if(s != null)
 		{
+			logger.warn("Could not load save file. Creating new client and account list.");
 			clientList = s.getClients();
 			accountList = s.getAccounts();
 		}
@@ -52,6 +58,8 @@ public class BankDriver {
 	private static void save(ArrayList<Client> clientList, ArrayList<Account> accountList) {
 		File accountFile = new File("Information.txt");
 		
+		logger.info("Starting Save.");
+		
 		try {
 		if(!accountFile.exists())
 			accountFile.createNewFile(); //IOexception
@@ -65,11 +73,11 @@ public class BankDriver {
 		
 		oos.close();
 		fos.close();
+		logger.info("Save Completed.");
 		}
 		catch (IOException e)
 		{
-			System.out.println("Warning: Exception Occured During Save. Information May Be Lost.");
-			System.out.println(e.getMessage());
+			logger.error("Save Failed to Complete." + e.getMessage());
 		}
 		
 	}
@@ -93,11 +101,11 @@ public class BankDriver {
 		}
 		catch (IOException e)
 		{
-			System.out.println("Warning: Exception Occured During Load. Account and Client Lists Could Not Be Imported.");
+			logger.error("Load Failed to Complete Load. Could not Import Client or Account List" + e.getMessage());
 		}
 		catch (ClassNotFoundException e)
 		{
-			System.out.println("Warning: Exception Occured During Load. Could Not Read Save File Correctly.");
+			logger.error("Load Failed to Complete Load when reading from file. Could not Import Client or Account List" + e.getMessage());
 		}
 		return null;
 	}

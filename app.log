@@ -1,0 +1,5 @@
+2021-05-17 07:56:18,255 [main] DEBUG com.revature.driver.TestDriver - Debug
+2021-05-17 07:56:18,258 [main] INFO  com.revature.driver.TestDriver - Info
+2021-05-17 07:56:18,258 [main] WARN  com.revature.driver.TestDriver - Warn
+2021-05-17 07:56:18,258 [main] ERROR com.revature.driver.TestDriver - Error
+2021-05-17 07:56:18,258 [main] FATAL com.revature.driver.TestDriver - Fatal

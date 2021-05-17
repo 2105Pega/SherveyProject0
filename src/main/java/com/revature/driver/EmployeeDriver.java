@@ -3,6 +3,9 @@ package com.revature.driver;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.bank.Account;
 import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
@@ -10,6 +13,8 @@ import com.revature.bank.Client;
 
 public class EmployeeDriver extends ClientDriver{
 
+	private static final Logger logger = LogManager.getLogger(EmployeeDriver.class);
+	
 	public EmployeeDriver(ArrayList<Client> clientList, AccountManager aM) {
 		super(clientList, aM);
 		
@@ -20,6 +25,7 @@ public class EmployeeDriver extends ClientDriver{
 	{
 		if(User.equals("Admin") && Password.equals("Root"))
 		{
+			logger.info("Logged Is As Admi.");
 			employeMenu();
 			return 1;
 		}
@@ -84,6 +90,7 @@ public class EmployeeDriver extends ClientDriver{
 				}
 				catch(IllegalArgumentException e)
 				{
+					logger.error("Invlaid ID in EmployeeManager.Menu, Changin Account Status.");
 					System.out.println("ID invalid. Please try again.");
 				}
 				
@@ -138,14 +145,17 @@ public class EmployeeDriver extends ClientDriver{
 			case 1:
 				a.setStatus(AccountStatus.APPROVED);
 				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
+				logger.info("Account " + a.getAccountName() + "Status Updated to APPROVED");
 				break;
 			case 2:
 				a.setStatus(AccountStatus.DENIED);
 				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
+				logger.info("Account " + a.getAccountName() + "Status Updated to DENIED");
 				break;
 			case 3:
 				a.setStatus(AccountStatus.CANCELED);
 				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
+				logger.info("Account " + a.getAccountName() + "Status Updated to CANCELED");
 				break;
 			case 4:
 				return;
