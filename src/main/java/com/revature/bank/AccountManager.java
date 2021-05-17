@@ -6,8 +6,6 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.revature.driver.BankDriver;
-
 public class AccountManager {
 
 	private static ArrayList<Account> accountList;

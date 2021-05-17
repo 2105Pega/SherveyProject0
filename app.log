@@ -8,3 +8,40 @@
 2021-05-17 09:41:58,902 [main] INFO  com.revature.driver.EmployeeDriver - Account Kid's Room FundStatus Updated to APPROVED
 2021-05-17 09:42:05,238 [main] INFO  com.revature.driver.BankDriver - Starting Save.
 2021-05-17 09:42:05,240 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-17 11:10:36,060 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:12:53,412 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:12:55,745 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with  
+2021-05-17 11:13:35,011 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:13:37,322 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with  
+2021-05-17 11:14:25,655 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:14:28,602 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 11:14:28,611 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-17 11:17:59,502 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:18:13,835 [main] INFO  com.revature.driver.ClientDriver - New Client created: Client [userName=Thatcher, password=Main, firstName=Hate's, lastName=Laser, address=Sights, clientID=6a1e2674-0c11-4d48-88f8-e3486ff0a8f4]
+2021-05-17 11:18:18,794 [main] INFO  com.revature.driver.ClientDriver - Loged in as Client [userName=Thatcher, password=Main, firstName=Hate's, lastName=Laser, address=Sights, clientID=6a1e2674-0c11-4d48-88f8-e3486ff0a8f4]
+2021-05-17 11:18:26,834 [main] INFO  com.revature.bank.AccountManager - Added Account Account [accountName=Laser Sight Collection, status=PENDING, ACCOUNT_ID=7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff, balance=0.0, ownerID=6a1e2674-0c11-4d48-88f8-e3486ff0a8f4, coOwnerIDs=[]]
+2021-05-17 11:18:26,834 [main] INFO  com.revature.driver.ClientDriver - New Account created: Account [accountName=Laser Sight Collection, status=PENDING, ACCOUNT_ID=7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff, balance=0.0, ownerID=6a1e2674-0c11-4d48-88f8-e3486ff0a8f4, coOwnerIDs=[]]
+2021-05-17 11:18:38,729 [main] INFO  com.revature.bank.AccountManager - Added Account Account [accountName=Retirement Fund, status=PENDING, ACCOUNT_ID=c1b954ff-59d7-46f2-86a0-7efdc1c932f9, balance=0.0, ownerID=6a1e2674-0c11-4d48-88f8-e3486ff0a8f4, coOwnerIDs=[]]
+2021-05-17 11:18:38,730 [main] INFO  com.revature.driver.ClientDriver - New Account created: Account [accountName=Retirement Fund, status=PENDING, ACCOUNT_ID=c1b954ff-59d7-46f2-86a0-7efdc1c932f9, balance=0.0, ownerID=6a1e2674-0c11-4d48-88f8-e3486ff0a8f4, coOwnerIDs=[]]
+2021-05-17 11:19:32,082 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 11:19:58,562 [main] INFO  com.revature.driver.EmployeeDriver - Account Laser Sight CollectionStatus Updated to APPROVED
+2021-05-17 11:20:21,138 [main] INFO  com.revature.driver.EmployeeDriver - Account Retirement FundStatus Updated to CANCELED
+2021-05-17 11:20:41,739 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 11:20:41,741 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-17 11:21:28,803 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:21:33,586 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 11:21:37,490 [main] ERROR com.revature.driver.EmployeeDriver - Invlaid ID in EmployeeManager.Menu, Changin Account Status.
+2021-05-17 11:22:10,873 [main] INFO  com.revature.driver.EmployeeDriver - Account Retirement FundStatus Updated to CANCELED
+2021-05-17 11:22:23,274 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 11:22:23,276 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-17 11:23:31,218 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:23:36,730 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 11:23:49,625 [main] ERROR com.revature.driver.EmployeeDriver - Invlaid ID in EmployeeManager.Menu, Changin Account Status.
+2021-05-17 11:23:59,010 [main] INFO  com.revature.bank.AccountManager - Removing account Account [accountName=SiteB, status=DENIED, ACCOUNT_ID=acd55cfb-3547-4414-b632-926cd3c0d284, balance=400.0, ownerID=bb8854a2-df2e-4667-a6cf-fd9518efe1e4, coOwnerIDs=[]]
+2021-05-17 11:23:59,010 [main] INFO  com.revature.bank.AccountManager - Removing account Account [accountName=Retirement Fund, status=CANCELED, ACCOUNT_ID=c1b954ff-59d7-46f2-86a0-7efdc1c932f9, balance=0.0, ownerID=6a1e2674-0c11-4d48-88f8-e3486ff0a8f4, coOwnerIDs=[]]
+2021-05-17 11:24:06,993 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 11:24:06,997 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-17 11:25:21,419 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 11:25:27,265 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 11:25:35,873 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 11:25:35,875 [main] INFO  com.revature.driver.BankDriver - Save Completed.

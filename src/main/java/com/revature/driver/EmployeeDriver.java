@@ -25,7 +25,7 @@ public class EmployeeDriver extends ClientDriver{
 	{
 		if(User.equals("Admin") && Password.equals("Root"))
 		{
-			logger.info("Logged Is As Admi.");
+			logger.info("Logged Is As Admim.");
 			employeMenu();
 			return 1;
 		}
@@ -42,11 +42,11 @@ public class EmployeeDriver extends ClientDriver{
 			
 			System.out.println("Welcome Admin, " + "!\nPlease select one of the follow options.");
 			System.out.println("1.) Clients Summary");
-			//System.out.println("2.) Modify Client");
 			System.out.println("2.) Accounts Summary");
 			System.out.println("3.) Change Account Status");
 			System.out.println("4.) Access Accounts As Client");
-			System.out.println("5.) Exit");
+			System.out.println("5.) Remove Canceled and Denied Accounts");
+			System.out.println("6.) Exit");
 			
 			selection = sc.getInt();
 			
@@ -56,26 +56,7 @@ public class EmployeeDriver extends ClientDriver{
 				for(Client c : clientList)
 					System.out.println(c.toString());
 				break;
-				/*
-			case 2:
-				System.out.println("Enter Client's User Name:");
-				String user = sc.getLine();
 				
-				Client c = null;
-				
-				for(Client c2 : clientList)
-				{
-					if(c2.getUsername().equals(user))
-						c = c2;
-						
-				}
-				
-				if(c != null)
-					modifyClientMenu(c);
-				else
-					System.out.println("Error User Name not found in System. Please try again.");
-				break;
-				*/
 			case 2:
 				for(Account a : super.aM.getAllAccounts())
 					System.out.println(a.toString());
@@ -116,6 +97,10 @@ public class EmployeeDriver extends ClientDriver{
 				break;
 				
 			case 5:
+				System.out.println("Removing All Denied and Canceled Accounts");
+				aM.removeAccounts();
+				break;
+			case 6:
 				return;
 			default:
 				selection = -1;
@@ -163,45 +148,7 @@ public class EmployeeDriver extends ClientDriver{
 				selection = -1;
 			}
 		} while (selection != 4);
-		
+		aM.removeAccounts();
 	}
-/*
-	private void modifyClientMenu(Client c) {
-		System.out.println("1.) Change Username");
-		System.out.println("2.) Change Password");
-		System.out.println("3.) Change First name");
-		System.out.println("4.) Change Last Name");
-		System.out.println("5.) Change Address");
-		System.out.println("6.) Exit");
-		
-		int selection;
-		do
-		{
-			selection = sc.getInt();
-			
-			switch (selection)
-			{
-			case 1:
-				
-				
-				
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				return;
-			default:
-				selection = -1;
-			}
-		} while (selection != 4);
-		
-		
-	}
-	*/
+
 }

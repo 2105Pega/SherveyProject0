@@ -216,6 +216,7 @@ public class ClientDriver {
 					if(userName.equals(c.getUsername()))
 					{
 						a.getCoOwnerIDs().add(c.getClientID());
+						logger.info("Added Co-Owner " + c.toString() + " to " + a.toString());
 						System.out.println("Added " + userName);
 					}
 					else
