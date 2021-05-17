@@ -37,16 +37,20 @@ public class EmployeeDriver extends ClientDriver{
 	public void employeMenu()
 	{
 		int selection = -1;
-		
+		Account a;
+		String s;
 		do {
 			
 			System.out.println("Welcome Admin, " + "!\nPlease select one of the follow options.");
 			System.out.println("1.) Clients Summary");
 			System.out.println("2.) Accounts Summary");
 			System.out.println("3.) Change Account Status");
-			System.out.println("4.) Access Accounts As Client");
-			System.out.println("5.) Remove Canceled and Denied Accounts");
-			System.out.println("6.) Exit");
+			System.out.println("4.) Withdraw From Account");
+			System.out.println("5.) Deposit Into Account");
+			System.out.println("6.) Transfer from Account");
+			System.out.println("7.) Access Accounts As Client");
+			System.out.println("8.) Remove Canceled and Denied Accounts");
+			System.out.println("9.) Exit");
 			
 			selection = sc.getInt();
 			
@@ -58,14 +62,14 @@ public class EmployeeDriver extends ClientDriver{
 				break;
 				
 			case 2:
-				for(Account a : super.aM.getAllAccounts())
-					System.out.println(a.toString());
+				for(Account a2 : super.aM.getAllAccounts())
+					System.out.println(a2.toString());
 				break;
 				
 			case 3:
-				System.out.println("Enter Account ID");
+				System.out.println("Enter Account ID: ");
 				String id = sc.getLine();
-				Account a = null;
+				a = null;
 				try {
 					a = aM.getAccountByAccountID(UUID.fromString(id));
 				}
@@ -84,8 +88,51 @@ public class EmployeeDriver extends ClientDriver{
 					modifyAccountStatus(a);
 				
 				break;
-				
 			case 4:
+				
+				System.out.println("Enter Account ID to Withdraw From: ");
+				s = sc.getLine();
+				
+				try {
+					a = aM.getAccountByAccountID(UUID.fromString(s));
+					this.withdraw(a);
+				}
+				catch (IllegalArgumentException e)
+				{
+					logger.error("Account Not Found.") ;
+				}
+				
+				
+				break;
+			case 5:
+				
+				System.out.println("Enter Account ID to Deposit To: ");
+				s = sc.getLine();
+				try {
+					a = aM.getAccountByAccountID(UUID.fromString(s));
+					this.deposit(a);
+				}
+				catch (IllegalArgumentException e)
+				{
+					logger.error("Account Not Found.") ;
+				}
+				
+				break;
+			case 6:
+				
+				System.out.print("Enter Account ID to Transfer From");
+				
+				s = sc.getLine();
+				try {
+				a = aM.getAccountByAccountID(UUID.fromString(s));
+				this.transfer(a);
+				} catch (IllegalArgumentException e)
+				{
+					logger.error("Account Not Found.") ;
+				}
+				
+				break;
+			case 7:
 				
 				String user, pass;
 				System.out.println("Enter Username: ");
@@ -96,11 +143,11 @@ public class EmployeeDriver extends ClientDriver{
 				super.logIn(user, pass);
 				break;
 				
-			case 5:
+			case 8:
 				System.out.println("Removing All Denied and Canceled Accounts");
 				aM.removeAccounts();
 				break;
-			case 6:
+			case 9:
 				return;
 			default:
 				selection = -1;
@@ -108,7 +155,7 @@ public class EmployeeDriver extends ClientDriver{
 			}
 			
 			
-			} while (selection != 5);
+			} while (selection != 9);
 	}
 
 	private void modifyAccountStatus(Account a)

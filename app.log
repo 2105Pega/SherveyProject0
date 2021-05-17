@@ -58,3 +58,39 @@
 2021-05-17 11:55:36,506 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with asd Lind Nal
 2021-05-17 13:38:44,588 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with Nope Invalid
 2021-05-17 13:38:44,596 [main] INFO  com.revature.driver.ClientDriver - Loged in as Client [userName=User, password=Pass, firstName=Fname, lastName=Lname, address=Address, clientID=bacd665d-38b3-44ef-b96e-2ba9d985a135]
+2021-05-17 13:52:12,614 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 13:52:12,992 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 13:52:19,114 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 13:52:31,579 [main] INFO  com.revature.driver.ClientDriver - Loged in as Client [userName=Ash, password=Main, firstName=No, lastName=Brain, address=B Site, clientID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1]
+2021-05-17 13:52:52,549 [main] INFO  com.revature.bank.AccountManager - Added Account Account [accountName=Test, status=PENDING, ACCOUNT_ID=a5bd88b4-9b25-47fd-8936-65d90a128c22, balance=0.0, ownerID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1, coOwnerIDs=[]]
+2021-05-17 13:52:52,549 [main] INFO  com.revature.driver.ClientDriver - New Account created: Account [accountName=Test, status=PENDING, ACCOUNT_ID=a5bd88b4-9b25-47fd-8936-65d90a128c22, balance=0.0, ownerID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1, coOwnerIDs=[]]
+2021-05-17 13:53:06,939 [main] INFO  com.revature.bank.AccountManager - Withdrew 100.0 to Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1
+2021-05-17 13:53:13,858 [main] INFO  com.revature.bank.AccountManager - Deposited 100.0 to Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1
+2021-05-17 13:53:32,610 [main] INFO  com.revature.bank.AccountManager - Withdrew 1000.0 to Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1
+2021-05-17 13:53:32,611 [main] INFO  com.revature.bank.AccountManager - Deposited 1000.0 to Kid's Room Fund, ID: 543713f8-01fa-4214-ac3e-c3f07ceeeb28
+2021-05-17 13:53:32,611 [main] INFO  com.revature.bank.AccountManager - Transfered 1000.0 from Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1, to Kid's Room Fund, ID: 543713f8-01fa-4214-ac3e-c3f07ceeeb28
+2021-05-17 13:53:44,779 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 13:53:44,781 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-17 14:24:12,385 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 14:24:17,122 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 14:24:34,754 [main] INFO  com.revature.bank.AccountManager - Withdrew 250.0 to Laser Sight Collection, ID: 7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff
+2021-05-17 14:24:42,713 [main] INFO  com.revature.bank.AccountManager - Deposited 250.0 to Laser Sight Collection, ID: 7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff
+2021-05-17 14:25:06,136 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 14:25:11,066 [main] INFO  com.revature.bank.AccountManager - Deposited 250.0 to Laser Sight Collection, ID: 7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff
+2021-05-17 14:25:53,346 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 14:25:58,993 [main] INFO  com.revature.bank.AccountManager - Withdrew 250.0 to Laser Sight Collection, ID: 7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff
+2021-05-17 14:26:53,126 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 14:26:56,809 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 14:27:03,131 [main] INFO  com.revature.bank.AccountManager - Withdrew 250.0 to Laser Sight Collection, ID: 7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff
+2021-05-17 14:27:09,097 [main] INFO  com.revature.bank.AccountManager - Deposited 500.0 to Laser Sight Collection, ID: 7a1c4bd6-a1fd-474f-8c96-b6b7f856f4ff
+2021-05-17 14:27:20,673 [main] INFO  com.revature.driver.ClientDriver - Loged in as Client [userName=Ash, password=Main, firstName=No, lastName=Brain, address=B Site, clientID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1]
+2021-05-17 14:27:40,130 [main] INFO  com.revature.bank.AccountManager - Withdrew 250.0 to Kid's Room Fund, ID: 543713f8-01fa-4214-ac3e-c3f07ceeeb28
+2021-05-17 14:27:42,985 [main] INFO  com.revature.bank.AccountManager - Deposited 250.0 to Kid's Room Fund, ID: 543713f8-01fa-4214-ac3e-c3f07ceeeb28
+2021-05-17 14:27:57,961 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 14:28:36,359 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 14:28:39,785 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-17 14:29:08,449 [main] INFO  com.revature.bank.AccountManager - Withdrew 500.0 to Ash's Headshot's, ID: 7afad73c-2ea8-4279-abdc-23728f7a4e3c
+2021-05-17 14:29:08,449 [main] INFO  com.revature.bank.AccountManager - Deposited 500.0 to Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1
+2021-05-17 14:29:08,449 [main] INFO  com.revature.bank.AccountManager - Transfered 500.0 from Ash's Headshot's, ID: 7afad73c-2ea8-4279-abdc-23728f7a4e3c, to Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1
+2021-05-17 14:29:14,136 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 14:29:14,139 [main] INFO  com.revature.driver.BankDriver - Save Completed.

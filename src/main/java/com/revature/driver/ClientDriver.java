@@ -146,65 +146,15 @@ public class ClientDriver {
 				break;
 				
 			case 2: //Withdars Money from Current Account
-				System.out.println("Ammount to Withdraw: ");
-				double withdrawValue = sc.getDouble();
-				
-				try {
-				aM.withdraw(a, withdrawValue);
-				}
-				catch (IllegalArgumentException e){
-					logger.error("caught IllegalArgumentException in clientManager, Withdraw " + e.getMessage());
-					System.out.println(e.getMessage());
-				}
-				catch (IllegalStateException e)
-				{
-					logger.error("caught IllegalStateException in clientManager, Withdraw " + e.getMessage());
-					System.out.println(e.getMessage());
-				}
+				this.withdraw(a);
 				break;
 				
 			case 3: //Deposits money to current Account
 				
-				System.out.println("Ammount to Deposit: ");
-				double depositValue = sc.getDouble();
-				
-				try {
-				aM.deposit(a, depositValue);
-				}
-				catch (IllegalArgumentException e){
-					logger.error("caught IllegalArgumentException in clientManager, Deposit " + e.getMessage());
-					System.out.println(e.getMessage());
-				}
-				catch (IllegalStateException e)
-				{
-					logger.error("caught IllegalStateException in clientManager, Deposit " + e.getMessage());
-					System.out.println(e.getMessage());
-				}
+				this.deposit(a);
 				break;
-				
 			case 4: //Transfers Money from Current Account to Target Account
-				System.out.println("Ammount to Transfer: ");
-				double transferValue = sc.getDouble();
-				
-				System.out.println("Enter Target Account's ID: ");
-				String transferAccountID = sc.getLine();
-				Account tAccount = aM.getAccountByAccountID(UUID.fromString(transferAccountID));
-				
-				try {
-				aM.transfer(a, tAccount, transferValue);
-				}
-				catch (IllegalArgumentException e) {
-					logger.error("caught IllegalArgumentException in clientManager, Transfer " + e.getMessage());
-					System.out.println(e.getMessage());
-				}
-				catch (NullPointerException e){
-					logger.error("caught NullPointerException in clientManager, Transfer " + e.getMessage());
-					System.out.println(e.getMessage());
-				}
-				catch (IllegalStateException e) {
-					logger.error("caught IllegalStateException in clientManager, Transfer " + e.getMessage());
-					System.out.println(e.getMessage());
-				}	
+				this.transfer(a);
 				break;
 				
 			case 5: //Adds a Co-Owner to Current Account
@@ -235,6 +185,70 @@ public class ClientDriver {
 		}while(selection != 6);
 	}
 	
+	protected void transfer(Account a) {
+		System.out.println("Ammount to Transfer: ");
+		double transferValue = sc.getDouble();
+		
+		System.out.println("Enter Target Account's ID: ");
+		String transferAccountID = sc.getLine();
+		Account tAccount = aM.getAccountByAccountID(UUID.fromString(transferAccountID));
+		
+		try {
+		aM.transfer(a, tAccount, transferValue);
+		}
+		catch (IllegalArgumentException e) {
+			logger.error("caught IllegalArgumentException in clientManager, Transfer " + e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		catch (NullPointerException e){
+			logger.error("caught NullPointerException in clientManager, Transfer " + e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		catch (IllegalStateException e) {
+			logger.error("caught IllegalStateException in clientManager, Transfer " + e.getMessage());
+			System.out.println(e.getMessage());
+		}	
+		
+	}
+
+	protected void deposit(Account a) {
+		System.out.println("Ammount to Deposit: ");
+		double depositValue = sc.getDouble();
+		
+		try {
+		aM.deposit(a, depositValue);
+		}
+		catch (IllegalArgumentException e){
+			logger.error("caught IllegalArgumentException in clientManager, Deposit " + e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		catch (IllegalStateException e)
+		{
+			logger.error("caught IllegalStateException in clientManager, Deposit " + e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
+	protected void withdraw(Account a) {
+		System.out.println("Ammount to Withdraw: ");
+		double withdrawValue = sc.getDouble();
+		
+		try {
+		aM.withdraw(a, withdrawValue);
+		}
+		catch (IllegalArgumentException e){
+			logger.error("caught IllegalArgumentException in clientManager, Withdraw " + e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		catch (IllegalStateException e)
+		{
+			logger.error("caught IllegalStateException in clientManager, Withdraw " + e.getMessage());
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
 	public void createClient()
 	{	
 		System.out.println("Please enter User Name: ");
