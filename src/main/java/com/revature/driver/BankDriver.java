@@ -35,12 +35,12 @@ public class BankDriver {
 		
 		if(s != null)
 		{
-			logger.warn("Could not load save file. Creating new client and account list.");
 			clientList = s.getClients();
 			accountList = s.getAccounts();
 		}
 		else
-		{
+		{	
+			logger.warn("Could not load save file. Creating new client and account list.");
 			clientList = new ArrayList<Client>();
 			accountList = new ArrayList<Account>();
 		}

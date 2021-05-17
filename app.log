@@ -1,5 +1,10 @@
-2021-05-17 07:56:18,255 [main] DEBUG com.revature.driver.TestDriver - Debug
-2021-05-17 07:56:18,258 [main] INFO  com.revature.driver.TestDriver - Info
-2021-05-17 07:56:18,258 [main] WARN  com.revature.driver.TestDriver - Warn
-2021-05-17 07:56:18,258 [main] ERROR com.revature.driver.TestDriver - Error
-2021-05-17 07:56:18,258 [main] FATAL com.revature.driver.TestDriver - Fatal
+2021-05-17 09:40:57,704 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-17 09:40:57,713 [main] WARN  com.revature.driver.BankDriver - Could not load save file. Creating new client and account list.
+2021-05-17 09:41:01,774 [main] INFO  com.revature.driver.ClientDriver - Loged in as Client [userName=Ash, password=Main, firstName=No, lastName=Brain, address=B Site, clientID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1]
+2021-05-17 09:41:21,894 [main] INFO  com.revature.bank.AccountManager - Deposited 10000.1 to Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1
+2021-05-17 09:41:40,548 [main] INFO  com.revature.bank.AccountManager - Added Account Account [accountName=Kid's Room Fund, status=PENDING, ACCOUNT_ID=543713f8-01fa-4214-ac3e-c3f07ceeeb28, balance=0.0, ownerID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1, coOwnerIDs=[]]
+2021-05-17 09:41:40,549 [main] INFO  com.revature.driver.ClientDriver - New Account created: Account [accountName=Kid's Room Fund, status=PENDING, ACCOUNT_ID=543713f8-01fa-4214-ac3e-c3f07ceeeb28, balance=0.0, ownerID=6c17f41e-031d-469e-9f3a-dc02fd7ec8b1, coOwnerIDs=[]]
+2021-05-17 09:41:50,446 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admi.
+2021-05-17 09:41:58,902 [main] INFO  com.revature.driver.EmployeeDriver - Account Kid's Room FundStatus Updated to APPROVED
+2021-05-17 09:42:05,238 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-17 09:42:05,240 [main] INFO  com.revature.driver.BankDriver - Save Completed.
