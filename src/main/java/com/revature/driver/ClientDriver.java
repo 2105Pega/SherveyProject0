@@ -1,40 +1,29 @@
 package com.revature.driver;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.UUID;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.bank.Account;
-import com.revature.bank.AccountManagment;
+import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
 
 public class ClientDriver {
 
-	private ArrayList<Client> clientList;
-	private ArrayList<Account> accountList;
+	protected ArrayList<Client> clientList;
 	
 	private Client currentClient;
+	protected static ScannerSingleton sc = new ScannerSingleton();
+	protected AccountManager aM;
+	private static final Logger logger = LogManager.getLogger(ClientDriver.class);
 	
-	public ClientDriver(ArrayList<Client> clientList, ArrayList<Account> accountList)
+	public ClientDriver(ArrayList<Client> clientList, AccountManager aM)
 	{
 		this.clientList = clientList;
-		this.accountList = accountList;
-	}
-	
-	public Account selectAccount(UUID AccountID) 
-	{
-		
-		for(Account a : accountList)
-		{
-			if(a.getOwnerID() == AccountID)
-			{
-				return a;
-			}
-		}
-		
-		return null;
-			
+		this.aM = aM;
 	}
 	
 	public int logIn(String userName, String password)
@@ -42,19 +31,22 @@ public class ClientDriver {
 		boolean validLogIn = false;
 		for(Client c : clientList)
 		{
-			if(c.getUsername().compareTo(userName) == 0 && c.getPassword().compareTo(password) == 0)
+			if(c.getUsername().equals(userName) && c.getPassword().equals(password))
 			{
 				currentClient = c;
 				validLogIn = true;
+				logger.info("Loged in as " + c.toString());
 			}
 		}
 		
 		if(validLogIn == false)
 		{
+			logger.warn("Log in Failed with " + userName + " " + password);
 			return -1;
 		}
 		
-		ClientMenu();
+		System.out.println("User Info: " + currentClient.toString());
+		clientMenu();
 		
 		return 1;
 	}
@@ -63,219 +55,227 @@ public class ClientDriver {
 	{
 		int selection = -1;
 		
-		Scanner kIn = new Scanner(System.in);
-		
 		do {
-			displayClientMenu();
-			selection = kIn.nextInt();
-			kIn.nextLine();
+			
+			System.out.println("Welcome " + currentClient.getUsername() + "!\nPlease select one of the follow options.");
+			System.out.println("1.) Accounts Summary");
+			System.out.println("2.) Access Account");
+			System.out.println("3.) Apply for Account");
+			System.out.println("4.) Exit");
+			
+			selection = sc.getInt();
 			
 			switch (selection)
 			{
 			case 1:
-				accountsSummary();
+				System.out.println(aM.accountsSummary(currentClient.getClientID()));
 				break;
 			case 2:
-				String AID = kIn.nextLine();
-				Account a = selectAccount(UUID.fromString(AID));
+
+				System.out.println("Enter Account ID");
+				String id = sc.getLine();
+				Account a = null;
+				try {
+					a = aM.getAccountByAccountID(UUID.fromString(id));
+				}
+				catch(IllegalArgumentException e)
+				{
+					logger.error("caught IllegalArgumentException in clientManager, Account Access " + e.getMessage());
+					System.out.println("ID invalid. Please try again.");
+				}
 				
 				if(a == null)
 				{
-					System.out.println("Error, Account ID not found. Please try again.");
+					System.out.println("Account ID not in System.");
+					break;
+				}
+				
+				if(a.getOwnerID().equals(currentClient.getClientID()))
+				{
+					try {
+						manageAccount(a);
+					} catch (Exception e) {
+						logger.warn("error in ClientManager, Access Account: " + e.getMessage());
+						e.printStackTrace();
+					}
+					break;
 				}
 				else
 				{
-					manageAccount(a);
+					for(UUID u : a.getCoOwnerIDs())
+					{
+						if(u.equals(currentClient.getClientID()))
+						{
+							try {
+								manageAccount(a);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							break;
+						}
+					}
+					
 				}
+				System.out.println("You are not a registered Owner or Co-Owner. Access Denied.");
 				break;
 			case 3:
+				createAccount();
 				break;
 			case 4:
 				return;
-				
 			default:
-				selection = -1;
 				break;
 			}
-			
-		} while(selection < 0);
-		kIn.close();
+			selection = -1;
+		} while(selection != 4);
+
 	}
 
-	private void manageAccount(Account a) {
-		Scanner kIn = new Scanner(System.in);
-		
-		System.out.println("1.) Summarize Account \n2.) Withdraw \n.3) Deposist \n4.) Transfer Funds\n5.)Add co-owner \n6.) Exit");
-		int selection = kIn.nextInt();
-		kIn.nextLine();
+	protected void manageAccount(Account a) throws Exception {
+		int selection = -1;
 		
 		do
 		{
+			System.out.println("1.) Summarize Account \n2.) Withdraw \n3.) Deposist \n4.) Transfer Funds\n5.) Add co-owner \n6.) Exit");
+			selection = sc.getInt();
 			switch (selection)
 			{
-			case 1:
-				System.out.println(a.getAccountName());
-				System.out.printf("Balance: " + "%.2d", a.getBalance());
-				System.out.println("Account ID: " + a.getACCOUNT_ID() + "\n---------------------------------");
+			case 1: //Sumaraized Currently Selected Account
+				System.out.println(aM.accountSummary(a));
 				break;
-			case 2:
-				int withdrawValue = kIn.nextInt();
-				kIn.nextLine();
 				
-				if(withdrawValue < 0)
-					System.out.println("Error: Enter value greater then 0 for transaction to go through.");
-				else
-					a.transaction(-1 * withdrawValue);
-				break;
-			case 3:
-				int depositValue = kIn.nextInt();
-				kIn.nextLine();
+			case 2: //Withdars Money from Current Account
+				System.out.println("Ammount to Withdraw: ");
+				double withdrawValue = sc.getDouble();
 				
-				if(depositValue < 0)
-					System.out.println("Error: Enter value greater then 0 for transaction to go through.");
-				else
-					a.transaction(depositValue);
-				break;
-			case 4:
-				int transferValue = kIn.nextInt();
-				kIn.nextLine();
-				
-				if(transferValue < 0)
-					System.out.println("Error: Enter value greater then 0 for transaction to go through.");
-				else
+				try {
+				aM.withdraw(a, withdrawValue);
+				}
+				catch (IllegalArgumentException e){
+					logger.error("caught IllegalArgumentException in clientManager, Withdraw " + e.getMessage());
+					System.out.println(e.getMessage());
+				}
+				catch (IllegalStateException e)
 				{
-					String transferAccountID = kIn.nextLine();
-					Account tAccount = selectAccount(UUID.fromString(transferAccountID));
-					
-					if(tAccount == null)
-					{
-						System.out.println("Error: ID for transfer target not found.");
-					}
-					else
-					{
-						a.transfer(tAccount, transferValue);
-					}
-					
+					logger.error("caught IllegalStateException in clientManager, Withdraw " + e.getMessage());
+					System.out.println(e.getMessage());
 				}
 				break;
-			case 5:
-				System.out.println("Please Enter co-owner ID: ");
-				String ID = kIn.nextLine();
-				UUID UserID = UUID.fromString(ID);
+				
+			case 3: //Deposits money to current Account
+				
+				System.out.println("Ammount to Deposit: ");
+				double depositValue = sc.getDouble();
+				
+				try {
+				aM.deposit(a, depositValue);
+				}
+				catch (IllegalArgumentException e){
+					logger.error("caught IllegalArgumentException in clientManager, Deposit " + e.getMessage());
+					System.out.println(e.getMessage());
+				}
+				catch (IllegalStateException e)
+				{
+					logger.error("caught IllegalStateException in clientManager, Deposit " + e.getMessage());
+					System.out.println(e.getMessage());
+				}
+				break;
+				
+			case 4: //Transfers Money from Current Account to Target Account
+				System.out.println("Ammount to Transfer: ");
+				double transferValue = sc.getDouble();
+				
+				System.out.println("Enter Target Account's ID: ");
+				String transferAccountID = sc.getLine();
+				Account tAccount = aM.getAccountByAccountID(UUID.fromString(transferAccountID));
+				
+				try {
+				aM.transfer(a, tAccount, transferValue);
+				}
+				catch (IllegalArgumentException e) {
+					logger.error("caught IllegalArgumentException in clientManager, Transfer " + e.getMessage());
+					System.out.println(e.getMessage());
+				}
+				catch (NullPointerException e){
+					logger.error("caught NullPointerException in clientManager, Transfer " + e.getMessage());
+					System.out.println(e.getMessage());
+				}
+				catch (IllegalStateException e) {
+					logger.error("caught IllegalStateException in clientManager, Transfer " + e.getMessage());
+					System.out.println(e.getMessage());
+				}	
+				break;
+				
+			case 5: //Adds a Co-Owner to Current Account
+				System.out.println("Please Enter co-owner User Name: ");
+				String userName = sc.getLine();
 				
 				for(Client c : clientList)
 				{
-					if(c.getClientID() == UserID)
-						a.getCoOwnerIDs().add(UserID);
-				}
-				
-				break;
-			case 6:
-				break;
-			default:
-				selection = -1;
-				break;
-			}
-		}while(selection != 6);
-	}
-
-	private void accountsSummary() 
-	{
-		System.out.println("Accounts you own.");
-		for(UUID u : currentClient.getOwnedAccounts())
-		{
-			for(Account a : accountList)
-			{
-				if(a.getOwnerID() == u)
-				{
-					System.out.println(a.getAccountName());
-					System.out.printf("Balance: " + "%.2d", a.getBalance());
-					System.out.println("Account ID: " + a.getACCOUNT_ID() + "\n---------------------------------");
-				}
-			}
-		}
-		
-		System.out.println("Accounts you co-own.");
-		for(UUID u : currentClient.getCoOwnedAccounts())
-		{
-			for(Account a : accountList)
-			{
-				for(UUID u2 : a.getCoOwnerIDs())
-				{
-					if(u2 == u)
+					if(userName.equals(c.getUsername()))
 					{
-						System.out.println(a.getAccountName() + ", Balance: " );
-						System.out.printf("%.2d", a.getBalance());
+						a.getCoOwnerIDs().add(c.getClientID());
+						System.out.println("Added " + userName);
 					}
+					else
+						System.out.println("Username not in System.");
 				}
-			}
-		}
-	}
+				break;
+				
+			case 6:
+				return;
+				
+			default:
+				break;
 
-	private void displayClientMenu() 
-	{
-		String menu[] = new String[5];
-		menu[0] = "Welcome " + currentClient.getUsername() + "!\nPlease select one of the follow options.";
-		menu[1] = "1.) Accounts Summary";
-		menu[2] = "2.) Access Account";
-		menu[3] = "3.) Apply for Account";
-		menu[4] = "4.) Exit";
-		
-		for(String s : menu)
-			System.out.println(s);
-	}
-	
-	public void logOut()
-	{
-		
+			}
+			selection = -1;
+		}while(selection != 6);
 	}
 	
 	public void createClient()
-	{
+	{	
+		System.out.println("Please enter User Name: ");
 		
-		Scanner kIn = new Scanner(System.in);
-		
-		System.out.println("Please your User Name: ");
-		
-		String userName = kIn.nextLine();
+		String userName = sc.getLine();
 		while(userName.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
-			userName = kIn.nextLine();
+			System.out.println("Please enter User Name: ");
+			userName = sc.getLine();
 		}
 		
 		System.out.println("Please Enter Password: ");
-		String password = kIn.nextLine();
+		String password = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
-			password = kIn.nextLine();
+			System.out.println("Please Enter Password: ");
+			password = sc.getLine();
 		}
 		
-		System.out.println("Please Enter your First Name: ");
-		String fName = kIn.nextLine();
+		System.out.println("Please Enter First Name: ");
+		String fName = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
-			fName = kIn.nextLine();
+			System.out.println("Please Enter First Name: ");
+			fName = sc.getLine();
 		}
 		
-		System.out.println("Please Enter your Last Name: ");
-		String lName = kIn.nextLine();
+		System.out.println("Please Enter Last Name: ");
+		String lName = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
-			lName = kIn.nextLine();
+			System.out.println("Please Enter Last Name: ");
+			lName = sc.getLine();
 		}
 		
-		System.out.println("Please Enter your adress ");
-		String address = kIn.nextLine();
+		System.out.println("Please Enter Address: ");
+		String address = sc.getLine();
 		while(password.length() == 0)
 		{
-			System.out.println("Please your User Name: ");
-			address = kIn.nextLine();
+			System.out.println("Please Enter Address: ");
+			address = sc.getLine();
 		}
-		
 		
 		boolean userValid = true;
 		
@@ -288,52 +288,25 @@ public class ClientDriver {
 				{
 					userValid = false;
 					System.out.println("Username not available. Please enter a new name: ");
-					userName = kIn.nextLine();
+					userName = sc.getLine();
 				}
 			}			
 		}while(userValid == false);
-		
+	
 		Client c = new Client(userName, password, fName, lName, address);
 		clientList.add(c);
 		
-		for(Client c2 : clientList)
-			System.out.println(c2.toString());
-		
-		
-		kIn.close();
+		logger.info("New Client created: " + c.toString());
 	}
 	
 	public void createAccount()
 	{
-		Scanner kIn = new Scanner(System.in);
-		int selection;
+		System.out.println("Name Account: ");
+		String accountName = sc.getLine();
 		
-		System.out.println("1. Solo Account.\n2. Join Account");
-		selection = kIn.nextInt();
-		kIn.nextLine();
-		
-		while(selection != 1 || selection != 2)
-		{
-			System.out.println("1. Solo Account.\n2. Join Account");
-			selection = kIn.nextInt();
-			kIn.nextLine();
-			
-		}
-		
-		System.out.println("Name your account: ");
-		String accountName = kIn.nextLine();
-		
-		if(selection == 1)
-		{	
-			Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
-			accountList.add(a);
-			currentClient.getOwnedAccounts().add(a.getACCOUNT_ID());
-		}
-		else
-		{
-
-		}
-		
-		kIn.close();
+		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
+		aM.addAccount(a);
+		currentClient.getOwnedAccounts().add(a.getACCOUNT_ID());
+		logger.info("New Account created: " + a.toString());
 	}
 }

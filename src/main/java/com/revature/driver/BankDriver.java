@@ -7,130 +7,123 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.UUID;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.revature.bank.Account;
-import com.revature.bank.AccountStatus;
+import com.revature.bank.AccountManager;
 import com.revature.bank.Client;
+import com.revature.bank.SavePacket;
 
 public class BankDriver {
 	
 	
 	//TODO: Fold Employee, Client, and Account into a set of 3 entries in 1 ArrayList to r/w them in all at once.
 	static ClientDriver clientDriver;
-	
+	static EmployeeDriver employeeDriver;
+	static ScannerSingleton sc = new ScannerSingleton();
+	private static final Logger logger = LogManager.getLogger(BankDriver.class);
 	public static void main(String args[])
 	{
-		ArrayList<Client> clientList = getClientList();
-		ArrayList<Account> accountList = getAccountList();
-		clientDriver = new ClientDriver(clientList, accountList);
+		
+		logger.info("Starting Main Driver.");
+		
+		SavePacket s = loadSave();
+		ArrayList<Client> clientList;
+		ArrayList<Account> accountList;
+		
+		if(s != null)
+		{
+			logger.warn("Could not load save file. Creating new client and account list.");
+			clientList = s.getClients();
+			accountList = s.getAccounts();
+		}
+		else
+		{
+			clientList = new ArrayList<Client>();
+			accountList = new ArrayList<Account>();
+		}
+		
+		AccountManager accountManager = new AccountManager(accountList);
+		clientDriver = new ClientDriver(clientList, accountManager);
+		employeeDriver = new EmployeeDriver(clientList, accountManager);
 		
 		menu();
 		
-		saveClients(clientList);
-		//saveAccounts(accountList);
+		save(clientList, accountList);
 	}
 
 	
-	private static void saveAccounts(ArrayList<Account> accountList) {
-		File accountFile = new File("accounts.txt");
+	private static void save(ArrayList<Client> clientList, ArrayList<Account> accountList) {
+		File accountFile = new File("Information.txt");
 		
+		logger.info("Starting Save.");
+		
+		try {
 		if(!accountFile.exists())
-			accountFile.createNewFile();
+			accountFile.createNewFile(); //IOexception
 		
-		FileOutputStream fos = new FileOutputStream(accountFile);
+		FileOutputStream fos = new FileOutputStream(accountFile); //FileNotFoundException
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		
-		for(Account a : accountList)
-			oos.writeObject(a);
+		SavePacket save = new SavePacket(accountList, clientList);
+		
+		oos.writeObject(save);
 		
 		oos.close();
 		fos.close();
-		
-	}
-
-
-	private static void saveClients(ArrayList<Client> clientList) {
-		File clientsFile = new File("clients.txt");
-		
-		if(!clientsFile.exists())
-			clientsFile.createNewFile();
-		
-		FileOutputStream fos = new FileOutputStream(clientsFile);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		
-		for(Client c : clientList)
-			oos.writeObject(c);
-		
-		oos.close();
-		fos.close();
-	}
-
-
-	private static ArrayList<Account> getAccountList() 
-	{
-		File accountFile = new File("accounts.txt");
-		
-		if(!accountFile.exists())
+		logger.info("Save Completed.");
+		}
+		catch (IOException e)
 		{
-			return new ArrayList<Account>();
+			logger.error("Save Failed to Complete." + e.getMessage());
 		}
 		
-		FileInputStream fis = new FileInputStream(accountFile);
+	}
+
+	private static SavePacket loadSave() 
+	{
+		File accountFile = new File("Information.txt");
+		
+		try {
+		if(!accountFile.exists())
+			accountFile.createNewFile(); //IOexception
+		
+		FileInputStream fis = new FileInputStream(accountFile); //FileNotFoundException
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		
-		Account a;
-		ArrayList<Account> accountList = new ArrayList<Account>();
-		
-		while(fis.available() > 0)
-		{
-			a = (Account) ois.readObject();
-			accountList.add(a);
-		}
+		SavePacket save = (SavePacket) ois.readObject();
 		
 		ois.close();
 		fis.close();
-		
-		return accountList;
-		
-	}
-
-
-	private static ArrayList<Client> getClientList()  {
-		File clientFile = new File("clients.txt");
-		
-		if(!clientFile.exists())
-		{
-			return new ArrayList<Client>();
+		return save;
 		}
-		
-		FileInputStream fis = new FileInputStream(clientFile);
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		
-		Client c;
-		ArrayList<Client> clientList = new ArrayList<Client>();
-		
-		while(fis.available() > 0)
+		catch (IOException e)
 		{
-			c = (Client) ois.readObject();
-			clientList.add(c);
+			logger.error("Load Failed to Complete Load. Could not Import Client or Account List" + e.getMessage());
 		}
-		
-		return clientList;
+		catch (ClassNotFoundException e)
+		{
+			logger.error("Load Failed to Complete Load when reading from file. Could not Import Client or Account List" + e.getMessage());
+		}
+		return null;
 	}
-
 
 	public static void menu()
 	{
-		Scanner kIn = new Scanner(System.in);
-		int selection;
+		int selection = -1;
 		
 		do
 		{
 			displayMainMenu();
-			selection = kIn.nextInt();
-			kIn.nextLine(); //Clears scanner so that futher prompts do not read the linebreak
+			selection = sc.getInt();
+			String username;
+			String password;
+			
+			
+			System.out.println(selection);
+			
 			switch (selection)
 			{
 			case 1:
@@ -138,11 +131,11 @@ public class BankDriver {
 				System.out.println("Client Log In Selected.");
 				
 				System.out.println("Enter Username: ");
-				String userName = kIn.nextLine();
+				username = sc.getLine();
 				System.out.println("Enter Password: ");
-				String password = kIn.nextLine();
+				password = sc.getLine();
 				
-				clientDriver.logIn(userName, password);
+				clientDriver.logIn(username, password);
 				
 				break;
 			case 2:
@@ -150,8 +143,17 @@ public class BankDriver {
 				clientDriver.createClient();
 				break;
 			case 3:
-				//Go to EmployeeManager and validate login.
 				System.out.println("Employee Log In Selected.");
+				
+				System.out.println("Employee In Selected.");
+				
+				System.out.println("Enter Username: ");
+				username = sc.getLine();
+				System.out.println("Enter Password: ");
+				password = sc.getLine();
+				
+				employeeDriver.logIn(username, password);
+				
 				break;
 			case 4:
 				System.out.println("Exiting.");
@@ -160,10 +162,7 @@ public class BankDriver {
 				System.out.println("Error, invalid selection made. Please make a valid selection.");
 				break;
 			}
-			
 		} while (selection != 4);
-		
-		kIn.close();
 	}
 
 

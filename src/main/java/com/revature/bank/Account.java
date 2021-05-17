@@ -2,7 +2,6 @@ package com.revature.bank;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.UUID;
 
 public class Account implements Serializable {
@@ -22,7 +21,7 @@ public class Account implements Serializable {
 
 	public double getBalance() {return balance;}
 
-	public void setBalance(int balance) {this.balance = balance;}
+	public void setBalance(double balance) {this.balance = balance;}
 
 	public UUID getOwnerID() {return ownerID;}
 
@@ -70,25 +69,21 @@ public class Account implements Serializable {
 		this.balance = balance;
 		this.ownerID = ownerID;
 		this.accountName = accountName;
+		coOwnerIDs = new ArrayList<UUID>();
 	}
 	
-	public void transaction(double ammountChange)
+	public void addCOwner(UUID coOwnerID)
 	{
-		balance = balance + ammountChange;
+		if(coOwnerID == null)
+			throw new NullPointerException("Co-Owner ID is Null");
+		
+		coOwnerIDs.add(coOwnerID);
 	}
 	
-	public void transfer(Account a, double ammount)
-	{
-		this.transaction(-1 * ammount);
-		a.transaction(ammount);
-	}
-
 	@Override
 	public String toString() {
 		return "Account [accountName=" + accountName + ", status=" + status + ", ACCOUNT_ID=" + ACCOUNT_ID + ", balance=" + balance + ", ownerID="
-				+ ownerID + ", coOwnerIDs=" + Arrays.toString(coOwnerIDs) + "]";
+				+ ownerID + ", coOwnerIDs=" + coOwnerIDs.toString() + "]";
 	}
-	
-	
-	
+
 }
