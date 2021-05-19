@@ -25,7 +25,6 @@ public class BankDriver {
 	private static final Logger logger = LogManager.getLogger(BankDriver.class);
 	public static void main(String args[])
 	{
-		
 		logger.info("Starting Main Driver.");
 		
 		SavePacket s = loadSave();

@@ -94,3 +94,6 @@
 2021-05-17 14:29:08,449 [main] INFO  com.revature.bank.AccountManager - Transfered 500.0 from Ash's Headshot's, ID: 7afad73c-2ea8-4279-abdc-23728f7a4e3c, to Ash's Bank, ID: 71cb70a7-93cd-44bc-ae9a-99f25b6fdeb1
 2021-05-17 14:29:14,136 [main] INFO  com.revature.driver.BankDriver - Starting Save.
 2021-05-17 14:29:14,139 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-18 14:47:06,732 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-18 14:47:15,678 [main] INFO  com.revature.driver.BankDriver - Starting Save.
+2021-05-18 14:47:15,681 [main] INFO  com.revature.driver.BankDriver - Save Completed.
