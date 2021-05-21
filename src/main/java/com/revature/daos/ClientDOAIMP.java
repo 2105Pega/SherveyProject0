@@ -117,7 +117,7 @@ public class ClientDOAIMP implements  ClientDAO {
 	public boolean updateClient(Client c) {
 		try (Connection conn = ConnectionUtils.getConnection()){
 			String sql = "update clients set username = ?, password = ?, firstname = ?, "
-					+ "lastname = ?, address = ?; ";
+					+ "lastname = ?, address = ? where client_id = ?; ";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, c.getUsername());
@@ -125,6 +125,7 @@ public class ClientDOAIMP implements  ClientDAO {
 			statement.setString(3, c.getFirstName());
 			statement.setString(4, c.getLastName());
 			statement.setString(5, c.getAddress());
+			statement.setInt(6, c.getClientID());
 			
 			statement.execute();
 			return true;

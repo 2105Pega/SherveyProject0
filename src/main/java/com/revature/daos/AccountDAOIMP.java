@@ -18,6 +18,8 @@ public class AccountDAOIMP implements AccountDAO{
 		try (Connection conn = ConnectionUtils.getConnection()){
 			String sql = "insert into accounts (account_name, owner_id, balance, current_status) values (?, ?, ?, cast (? as status));";
 			
+			//System.out.println("Adding + " + a.toString() + " to DB");
+			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, a.getAccountName());
 			statement.setInt(2, a.getOwnerID());
@@ -69,7 +71,7 @@ public class AccountDAOIMP implements AccountDAO{
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet r = statement.executeQuery();
-			
+			r.next();
 			Account a = makeAccount(r);
 			return a;
 			
@@ -217,7 +219,7 @@ public class AccountDAOIMP implements AccountDAO{
 	{
 		AccountStatus as;
 		
-		as = AccountStatus.valueOf(r.getString("account_status"));
+		as = AccountStatus.valueOf(r.getString("current_status"));
 		
 		return new Account(r.getString("account_name"), as, (double) r.getFloat("balance"),r.getInt("account_id") );
 	}

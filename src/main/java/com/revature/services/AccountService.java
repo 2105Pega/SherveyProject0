@@ -10,6 +10,11 @@ public class AccountService {
 
 	private AccountDAO aD = new AccountDAOIMP();
 	
+	public Account getAccountByID(int id)
+	{
+		return aD.getAccountByID(id);
+	}
+
 	public boolean addAccount(Account a)
 	{
 		return aD.addAccount(a);
@@ -24,14 +29,19 @@ public class AccountService {
 	{
 		return aD.removeAccounts();
 	}
-
-	public ArrayList<Integer> getAccountsByOwnerID(int id)
+	
+	public ArrayList<Account> getAccountsByOwnerID(int id)
 	{
 		return aD.getAccountsByOwnerID(id);
 	}
 	
-	public ArrayList<Integer> getAccountsByCoOwnerID(int id)
+	public ArrayList<Account> getAccountsByCoOwnerID(int id)
 	{
 		return aD.getAccountsByCoOwnerID(id);
+	}
+	
+	public ArrayList<Account> getAllAccounts()
+	{
+		return aD.getAllAccounts();
 	}
 }

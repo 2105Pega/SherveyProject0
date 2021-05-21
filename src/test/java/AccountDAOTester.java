@@ -10,13 +10,7 @@ import com.revature.bank.Client;
 
 class AccountDAOTester {
 	
-	ArrayList<Client> cList;
 
-	@BeforeEach
-	public void setUp()
-	{
-		Client c = new Client()
-	}
 	
 
 }

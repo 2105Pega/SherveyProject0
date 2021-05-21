@@ -11,35 +11,33 @@ public class ClientService {
 	private ClientDAO cD = new ClientDOAIMP();
 	
 	
+	public Client getClientByID(int id)
+	{
+		return cD.getClientByID(id);
+	}
+	
+	public Client getClientByUserAndPass(String username, String password)
+	{
+		return cD.getClientByUserAndPass(username, password);
+	}
+	
 	public boolean addClient(Client c)
 	{
 		return cD.addClient(c);
 	}
-
-
-	public Client getClientByID(int i) {
-		return cD.getClientByID(i);
-	}
-
-
-	public boolean removeClientByID(int i) {
-		// TODO Auto-generated method stub
-		boolean b = cD.removeClientByID(i);
-		return b;
-	}
 	
-	public boolean removeClientByUsernameAndPassword(String user, String pass) {
-		// TODO Auto-generated method stub
-		return cD.removeClientByUserAndPassword(user, pass);
-	}
-	
-	public ArrayList<Integer> getOwnedAccounts(Client c)
+	public boolean removeClientByUserAndPassword(String username, String password)
 	{
-		return cD.getOwnedAccounts(c);
+		return cD.removeClientByUserAndPassword(username, password);
 	}
 	
-	public ArrayList<Integer> getCoOwnedAccounts(Client c)
+	public boolean removeClientByID(int id)
 	{
-		return cD.getCoOwnedAccounts(c);
+		return cD.removeClientByID(id);
+	}
+	
+	public boolean updateClient(Client c)
+	{
+		return cD.updateClient(c);
 	}
 }
