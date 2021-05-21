@@ -1,4 +1,4 @@
-package com.revature.driver;
+package com.reavture.utils;
 
 import java.util.Scanner;
 

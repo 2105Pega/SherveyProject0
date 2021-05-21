@@ -10,10 +10,10 @@ public class Account implements Serializable {
 	
 	private AccountStatus status;
 	private String accountName;
-	private final UUID ACCOUNT_ID;
+	private int ACCOUNT_ID;
 	private double balance;
-	private UUID ownerID;
-	private ArrayList<UUID> coOwnerIDs;
+	private int ownerID;
+	private ArrayList<Integer> coOwnerIDs;
 	
 	public AccountStatus getStatus() {return status;}
 
@@ -23,60 +23,54 @@ public class Account implements Serializable {
 
 	public void setBalance(double balance) {this.balance = balance;}
 
-	public UUID getOwnerID() {return ownerID;}
+	public int getOwnerID() {return ownerID;}
 
 	public String getAccountName() {return accountName;}
 
 	public void setAccountName(String accountName) {this.accountName = accountName;}
 
-	public void setOwnerID(UUID ownerID) {this.ownerID = ownerID;}
+	public void setOwnerID(int ownerID) {this.ownerID = ownerID;}
 
-	public ArrayList<UUID> getCoOwnerIDs() {return coOwnerIDs;}
+	public ArrayList<Integer> getCoOwnerIDs() {return coOwnerIDs;}
 
-	public void setCoOwnerIDs(ArrayList<UUID> coOwnerIDs) {this.coOwnerIDs = coOwnerIDs;}
+	public void setCoOwnerIDs(ArrayList<Integer> coOwnerIDs) {this.coOwnerIDs = coOwnerIDs;}
 
-	public UUID getACCOUNT_ID() {return ACCOUNT_ID;}
+	public int getACCOUNT_ID() {return ACCOUNT_ID;}
 
 	public Account()
 	{
 		super();
-		this.ACCOUNT_ID = UUID.randomUUID();
+		this.ACCOUNT_ID = -1;
 	}
 	
-	public Account(String accountName, UUID ownerID, ArrayList<UUID> coOwnerIDs)
+	public Account(String accountName, int ownerID, ArrayList<Integer> coOwnerIDs)
 	{
-		this.ACCOUNT_ID = UUID.randomUUID();
 		this.ownerID = ownerID;
 		this.coOwnerIDs = coOwnerIDs;
 		this.status = AccountStatus.PENDING;
 		this.accountName = accountName;
 	}
 
-	public Account(String accountName, AccountStatus status, double balance, UUID ownerID, ArrayList<UUID> coOwnerIDs) {
+	public Account(String accountName, AccountStatus status, double balance, int ownerID, ArrayList<Integer> coOwnerIDs) {
 		super();
 		this.status = status;
-		ACCOUNT_ID = UUID.randomUUID();
 		this.balance = balance;
 		this.ownerID = ownerID;
 		this.coOwnerIDs = coOwnerIDs;
 		this.accountName = accountName;
 	}
 	
-	public Account(String accountName, AccountStatus status, double balance, UUID ownerID) {
+	public Account(String accountName, AccountStatus status, double balance, int ownerID) {
 		super();
 		this.status = status;
-		ACCOUNT_ID = UUID.randomUUID();
 		this.balance = balance;
 		this.ownerID = ownerID;
 		this.accountName = accountName;
-		coOwnerIDs = new ArrayList<UUID>();
+		coOwnerIDs = new ArrayList<Integer>();
 	}
 	
-	public void addCOwner(UUID coOwnerID)
+	public void addCOwner(int coOwnerID)
 	{
-		if(coOwnerID == null)
-			throw new NullPointerException("Co-Owner ID is Null");
-		
 		coOwnerIDs.add(coOwnerID);
 	}
 	

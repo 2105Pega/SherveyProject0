@@ -10,13 +10,14 @@ import com.revature.bank.Account;
 import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
+import com.revature.bank.ClientManager;
 
 public class EmployeeDriver extends ClientDriver{
 
 	private static final Logger logger = LogManager.getLogger(EmployeeDriver.class);
 	
-	public EmployeeDriver(ArrayList<Client> clientList, AccountManager aM) {
-		super(clientList, aM);
+	public EmployeeDriver(ClientManager clientManager, AccountManager aM) {
+		super(clientManager, aM);
 		
 	}
 

@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.reavture.utils.SavePacket;
+import com.reavture.utils.ScannerSingleton;
 import com.revature.bank.Account;
 import com.revature.bank.AccountManager;
 import com.revature.bank.Client;
-import com.revature.bank.SavePacket;
+import com.revature.bank.ClientManager;
 
 public class BankDriver {
 	
@@ -44,10 +46,11 @@ public class BankDriver {
 		}
 		
 		AccountManager accountManager = new AccountManager(accountList);
-		clientDriver = new ClientDriver(clientList, accountManager);
-		employeeDriver = new EmployeeDriver(clientList, accountManager);
+		ClientManager clientManager = new ClientManager(clientList);
+		clientDriver = new ClientDriver(clientManager, accountManager);
+		employeeDriver = new EmployeeDriver(clientManager, accountManager);
 		
-		menu();
+		menu(clientManager);
 		
 		save(clientList, accountList);
 	}
@@ -108,7 +111,7 @@ public class BankDriver {
 		return null;
 	}
 
-	public static void menu()
+	public static void menu(ClientManager cM)
 	{
 		int selection = -1;
 		
@@ -138,7 +141,7 @@ public class BankDriver {
 				break;
 			case 2:
 				System.out.println("Create Client Account Selected.");
-				clientDriver.createClient();
+				cM.createClient();
 				break;
 			case 3:
 				System.out.println("Employee Log In Selected.");

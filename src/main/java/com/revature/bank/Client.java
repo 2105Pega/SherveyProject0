@@ -15,9 +15,9 @@ public class Client implements Serializable{
 	private String firstName;
 	private String lastName;
 	private String address;
-	private final UUID clientID;
-	private ArrayList<UUID> ownedAccounts;
-	private ArrayList<UUID> coOwnedAccounts;
+	private final int clientID;
+	private ArrayList<Integer> ownedAccounts;
+	private ArrayList<Integer> coOwnedAccounts;
 	
 	public String getFirstName() {return firstName;}
 	public void setFirstName(String firstName) {this.firstName = firstName;}
@@ -25,20 +25,20 @@ public class Client implements Serializable{
 	public void setLastName(String lastName) {this.lastName = lastName;}
 	public String getAddress() {return address;}
 	public void setAddress(String address) {this.address = address;}
-	public UUID getClientID() {	return clientID;}
+	public int getClientID() {	return clientID;}
 	public void setuserName(String userName) {this.userName = userName;}
 	public String getUsername() {return this.userName;}
 	public void setuserPassword(String password) {this.password = password;}
 	public String getPassword() {return this.password;}
-	public void setOwnedAccounts(ArrayList<UUID> newList) {this.ownedAccounts = newList;}
-	public ArrayList<UUID> getOwnedAccounts() {return this.ownedAccounts;}
-	public void setCoOwnedAccounts(ArrayList<UUID> newList) {this.ownedAccounts = newList;}
-	public ArrayList<UUID> getCoOwnedAccounts() {return this.coOwnedAccounts;}
+	public void setOwnedAccounts(ArrayList<Integer> newList) {this.ownedAccounts = newList;}
+	public ArrayList<Integer> getOwnedAccounts() {return this.ownedAccounts;}
+	public void setCoOwnedAccounts(ArrayList<Integer> newList) {this.ownedAccounts = newList;}
+	public ArrayList<Integer> getCoOwnedAccounts() {return this.coOwnedAccounts;}
 	
 	public Client()
 	{
 		super();
-		this.clientID = UUID.randomUUID();
+		this.clientID = -1;
 	}
 	
 	public Client(String userName, String password, String firstName, String lastName, String address) {
@@ -48,9 +48,21 @@ public class Client implements Serializable{
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
-		this.clientID = UUID.randomUUID();
-		this.ownedAccounts = new ArrayList<UUID>();
-		this.coOwnedAccounts = new ArrayList<UUID>();
+		this.clientID = -1;
+		this.ownedAccounts = new ArrayList<Integer>();
+		this.coOwnedAccounts = new ArrayList<Integer>();
+	}
+	
+	public Client(int id, String userName, String password, String firstName, String lastName, String address) {
+		super();
+		this.clientID = id;
+		this.userName = userName;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.ownedAccounts = new ArrayList<Integer>();
+		this.coOwnedAccounts = new ArrayList<Integer>();
 	}
 	@Override
 	public String toString() {

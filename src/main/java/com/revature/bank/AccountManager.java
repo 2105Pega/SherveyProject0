@@ -23,7 +23,7 @@ public class AccountManager {
 			logger.error("Null Pointer Exception Occured in AccountManager.addAccount");
 			throw new NullPointerException();
 		}
-		else if(this.getAccountByAccountID(a.getACCOUNT_ID()) != null)
+		else if(this.getAccountByID(a.getACCOUNT_ID()) != null)
 		{
 			logger.error("Illegal Argument Exception Occured in AccountManager.addAccount");
 			throw new IllegalArgumentException();
@@ -32,6 +32,12 @@ public class AccountManager {
 		accountList.add(a);
 	}
 
+	public void removeAccount(UUID id)
+	{
+		this.getAccountByID(id).setStatus(AccountStatus.CANCELED);
+		this.removeAccounts();
+	}
+	
 	public void removeAccounts()
 	{
 		ArrayList<Account> toRemove = new ArrayList<Account>();
@@ -47,7 +53,7 @@ public class AccountManager {
 		accountList.removeAll(toRemove);
 	}
 	
-	public Account getAccountByAccountID(UUID u)
+	public Account getAccountByID(UUID u)
 	{
 		if(u == null)
 		{	

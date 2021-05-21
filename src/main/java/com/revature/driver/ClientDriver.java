@@ -6,23 +6,26 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.reavture.utils.ScannerSingleton;
 import com.revature.bank.Account;
 import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
+import com.revature.bank.ClientManager;
 
 public class ClientDriver {
 
 	protected ArrayList<Client> clientList;
 	
-	private Client currentClient;
+	private UUID currentClient;
+	private ClientManager cM;
 	protected static ScannerSingleton sc = new ScannerSingleton();
 	protected AccountManager aM;
 	private static final Logger logger = LogManager.getLogger(ClientDriver.class);
 	
-	public ClientDriver(ArrayList<Client> clientList, AccountManager aM)
+	public ClientDriver(ClientManager clientManager, AccountManager aM)
 	{
-		this.clientList = clientList;
+		this.cM = clientManager;
 		this.aM = aM;
 	}
 	
@@ -33,7 +36,7 @@ public class ClientDriver {
 		{
 			if(c.getUsername().equals(userName) && c.getPassword().equals(password))
 			{
-				currentClient = c;
+				currentClient = c.getClientID();
 				validLogIn = true;
 				logger.info("Loged in as " + c.toString());
 			}
@@ -57,7 +60,7 @@ public class ClientDriver {
 		
 		do {
 			
-			System.out.println("Welcome " + currentClient.getUsername() + "!\nPlease select one of the follow options.");
+			System.out.println("Welcome " + cM.getClientByID(currentClient).getUsername() + "!\nPlease select one of the follow options.");
 			System.out.println("1.) Accounts Summary");
 			System.out.println("2.) Access Account");
 			System.out.println("3.) Apply for Account");
@@ -68,7 +71,7 @@ public class ClientDriver {
 			switch (selection)
 			{
 			case 1:
-				System.out.println(aM.accountsSummary(currentClient.getClientID()));
+				System.out.println(aM.accountsSummary(currentClient));
 				break;
 			case 2:
 
@@ -90,7 +93,7 @@ public class ClientDriver {
 					break;
 				}
 				
-				if(a.getOwnerID().equals(currentClient.getClientID()))
+				if(a.getOwnerID().equals(currentClient))
 				{
 					try {
 						manageAccount(a);
@@ -104,7 +107,7 @@ public class ClientDriver {
 				{
 					for(UUID u : a.getCoOwnerIDs())
 					{
-						if(u.equals(currentClient.getClientID()))
+						if(u.equals(currentClient))
 						{
 							try {
 								manageAccount(a);
@@ -137,7 +140,13 @@ public class ClientDriver {
 		
 		do
 		{
-			System.out.println("1.) Summarize Account \n2.) Withdraw \n3.) Deposist \n4.) Transfer Funds\n5.) Add co-owner \n6.) Exit");
+			System.out.println("1.) Summarize Account");
+			System.out.println("2.) Withdraw");
+			System.out.println("3.) Deposist");
+			System.out.println("4.) Transfer Funds");
+			System.out.println("5.) Add co-owner");
+			System.out.println("6.) Delete Account");
+			System.out.println("7.) Exit");
 			selection = sc.getInt();
 			switch (selection)
 			{
@@ -175,8 +184,14 @@ public class ClientDriver {
 				break;
 				
 			case 6:
-				return;
+				if(aM.getAccountByAccountID(currentClient).getBalance() == 0)
+					
 				
+				
+				break;
+				
+			case 7:
+				return;
 			default:
 				break;
 
@@ -248,80 +263,15 @@ public class ClientDriver {
 		}
 		
 	}
-
-	public void createClient()
-	{	
-		System.out.println("Please enter User Name: ");
-		
-		String userName = sc.getLine();
-		while(userName.length() == 0)
-		{
-			System.out.println("Please enter User Name: ");
-			userName = sc.getLine();
-		}
-		
-		System.out.println("Please Enter Password: ");
-		String password = sc.getLine();
-		while(password.length() == 0)
-		{
-			System.out.println("Please Enter Password: ");
-			password = sc.getLine();
-		}
-		
-		System.out.println("Please Enter First Name: ");
-		String fName = sc.getLine();
-		while(password.length() == 0)
-		{
-			System.out.println("Please Enter First Name: ");
-			fName = sc.getLine();
-		}
-		
-		System.out.println("Please Enter Last Name: ");
-		String lName = sc.getLine();
-		while(password.length() == 0)
-		{
-			System.out.println("Please Enter Last Name: ");
-			lName = sc.getLine();
-		}
-		
-		System.out.println("Please Enter Address: ");
-		String address = sc.getLine();
-		while(password.length() == 0)
-		{
-			System.out.println("Please Enter Address: ");
-			address = sc.getLine();
-		}
-		
-		boolean userValid = true;
-		
-		do
-		{
-			userValid = true;
-			for(Client c2 : clientList)
-			{
-				if(c2.getUsername().equals(userName))
-				{
-					userValid = false;
-					System.out.println("Username not available. Please enter a new name: ");
-					userName = sc.getLine();
-				}
-			}			
-		}while(userValid == false);
-	
-		Client c = new Client(userName, password, fName, lName, address);
-		clientList.add(c);
-		
-		logger.info("New Client created: " + c.toString());
-	}
 	
 	public void createAccount()
 	{
 		System.out.println("Name Account: ");
 		String accountName = sc.getLine();
 		
-		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
+		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient);
 		aM.addAccount(a);
-		currentClient.getOwnedAccounts().add(a.getACCOUNT_ID());
+		cM.getClientByID(currentClient).getOwnedAccounts().add(a.getACCOUNT_ID());
 		logger.info("New Account created: " + a.toString());
 	}
 }

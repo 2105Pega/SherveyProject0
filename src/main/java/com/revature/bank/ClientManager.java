@@ -6,19 +6,88 @@ import java.util.UUID;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.reavture.utils.ScannerSingleton;
+
 public class ClientManager {
 
 	private static ArrayList<Client> clientList;
 	private static final Logger logger = LogManager.getLogger(ClientManager.class);
 	
+	public ClientManager(ArrayList<Client> clientList)
+	{
+		ClientManager.clientList = clientList;
+	}
+	
+	public void createClient()
+	{
+		ScannerSingleton sc = new ScannerSingleton();
+		
+		System.out.println("Please enter User Name: ");
+		
+		String userName = sc.getLine();
+		while(userName.length() == 0)
+		{
+			System.out.println("Please enter User Name: ");
+			userName = sc.getLine();
+		}
+		
+		System.out.println("Please Enter Password: ");
+		String password = sc.getLine();
+		while(password.length() == 0)
+		{
+			System.out.println("Please Enter Password: ");
+			password = sc.getLine();
+		}
+		
+		System.out.println("Please Enter First Name: ");
+		String fName = sc.getLine();
+		while(password.length() == 0)
+		{
+			System.out.println("Please Enter First Name: ");
+			fName = sc.getLine();
+		}
+		
+		System.out.println("Please Enter Last Name: ");
+		String lName = sc.getLine();
+		while(password.length() == 0)
+		{
+			System.out.println("Please Enter Last Name: ");
+			lName = sc.getLine();
+		}
+		
+		System.out.println("Please Enter Address: ");
+		String address = sc.getLine();
+		while(password.length() == 0)
+		{
+			System.out.println("Please Enter Address: ");
+			address = sc.getLine();
+		}
+		
+		boolean userValid = true;
+		
+		do
+		{
+			userValid = true;
+			for(Client c2 : clientList)
+			{
+				if(c2.getUsername().equals(userName))
+				{
+					userValid = false;
+					System.out.println("Username not available. Please enter a new name: ");
+					userName = sc.getLine();
+				}
+			}			
+		}while(userValid == false);
+	
+		Client c = new Client(userName, password, fName, lName, address);
+		clientList.add(c);
+		
+		logger.info("New Client created: " + c.toString());
+	}
+
 	public void addClient(Client c)
 	{
 		clientList.add(c);
-	}
-	
-	public Client createClient()
-	{
-		return null;
 	}
 	
 	public void removeClient(Client c)
