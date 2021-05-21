@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.reavture.utils.ConnectionUtils;
+import com.revature.bank.Account;
+import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
 
 public class ClientDOAIMP implements  ClientDAO {
@@ -100,7 +102,7 @@ public class ClientDOAIMP implements  ClientDAO {
 			String sql = "delete from clients where username = ? and password = ?;";
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1,username);
-			statement.setString(2, sql);
+			statement.setString(2, password);
 			
 			statement.execute();
 			return true;
@@ -114,31 +116,23 @@ public class ClientDOAIMP implements  ClientDAO {
 	@Override
 	public boolean updateClient(Client c) {
 		try (Connection conn = ConnectionUtils.getConnection()){
+			String sql = "update clients set username = ?, password = ?, firstname = ?, "
+					+ "lastname = ?, address = ?; ";
+			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, c.getUsername());
+			statement.setString(2, c.getPassword());
+			statement.setString(3, c.getFirstName());
+			statement.setString(4, c.getLastName());
+			statement.setString(5, c.getAddress());
+			
+			statement.execute();
+			return true;
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		return false;
-	}
-
-	@Override
-	public ArrayList<Integer> getOwnedAccounts(Client c) {
-		try (Connection conn = ConnectionUtils.getConnection()){
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return null;
-	}
-
-	@Override
-	public ArrayList<Integer> getCoOwnedAccounts(Client c) {
-		try (Connection conn = ConnectionUtils.getConnection()){
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return null;
 	}
 
 	private Client makeClient(ResultSet r) {
@@ -150,7 +144,5 @@ public class ClientDOAIMP implements  ClientDAO {
 		}
 		return null;
 	}
-
-	
 
 }

@@ -1,5 +1,7 @@
 package com.revature.services;
 
+import java.util.ArrayList;
+
 import com.revature.bank.Client;
 import com.revature.daos.ClientDAO;
 import com.revature.daos.ClientDOAIMP;
@@ -23,7 +25,6 @@ public class ClientService {
 	public boolean removeClientByID(int i) {
 		// TODO Auto-generated method stub
 		boolean b = cD.removeClientByID(i);
-		System.out.println("From Client Service " + b);
 		return b;
 	}
 	
@@ -32,4 +33,13 @@ public class ClientService {
 		return cD.removeClientByUserAndPassword(user, pass);
 	}
 	
+	public ArrayList<Integer> getOwnedAccounts(Client c)
+	{
+		return cD.getOwnedAccounts(c);
+	}
+	
+	public ArrayList<Integer> getCoOwnedAccounts(Client c)
+	{
+		return cD.getCoOwnedAccounts(c);
+	}
 }

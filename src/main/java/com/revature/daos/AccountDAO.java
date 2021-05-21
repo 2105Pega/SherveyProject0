@@ -9,21 +9,22 @@ public interface AccountDAO {
 
 	public boolean addAccount(Account a); 
 	
-	public boolean removeAccount(UUID id);
+	public boolean removeAccount(int id);
 	
-	public void removeAccounts();
+	public boolean removeAccounts();
 	
-	public Account getAccountByID(UUID id);
+	public Account getAccountByID(int id);
 	
-	public ArrayList<Account> getAccountsByCoOwnerID (UUID id);
+	public ArrayList<Account> getAccountsByCoOwnerID (int id);
 	
-	public ArrayList<Account> getAccountsByOwnerID(UUID ID);
+	public ArrayList<Account> getAccountsByOwnerID(int ID);
 	
 	public ArrayList<Account> getAllAccounts();
 	
-	public double withdraw(UUID id, double ammountChange);
+	public boolean withdraw(int id, double ammountChange);
 	
-	public double deposit(UUID id, double ammountChange);
+	public boolean deposit(int id, double ammountChange);
 	
-	public void transfer(UUID senderID, UUID targetID, double ammount);
+	public boolean transfer(int senderID, int targetID, double ammount);
+
 }

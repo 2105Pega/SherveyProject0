@@ -13,7 +13,5 @@ public interface ClientDAO {
 	public boolean removeClientByUserAndPassword(String username, String password);
 	public boolean removeClientByID(int id);
 	public boolean updateClient(Client c);
-	public ArrayList<Integer> getOwnedAccounts(Client c);
-	public ArrayList<Integer> getCoOwnedAccounts(Client c);
 	
 }
