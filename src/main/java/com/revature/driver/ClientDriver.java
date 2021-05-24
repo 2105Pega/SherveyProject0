@@ -1,17 +1,13 @@
 package com.revature.driver;
 
 import java.util.ArrayList;
-import java.util.UUID;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.reavture.utils.ScannerSingleton;
 import com.revature.bank.Account;
-import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
-import com.revature.bank.ClientManager;
 import com.revature.services.AccountService;
 import com.revature.services.ClientService;
 
@@ -233,7 +229,33 @@ public class ClientDriver {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+	}
+
+	public void createClient() {
+		String username, password, fName, lName, address;
 		
+		username = sc.getLine();
+		
+		while(cS.getClientByUsername(username) != null)
+		{
+			System.out.println("Username already in use. Enter a new name: ");
+			username = sc.getLine();
+		}
+		System.out.println("Enter Password: ");
+		password = sc.getLine();
+		System.out.println("Enter First Name: ");
+		fName = sc.getLine();
+		System.out.println("Enter Last Name: ");
+		lName = sc.getLine();
+		System.out.println("Enter Address");
+		address = sc.getLine();
+		
+		Client c = new Client(username, password, fName, lName, address);
+		try {
+			cS.addClient(c);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
 	}
 }

@@ -45,4 +45,9 @@ public class ClientService {
 	{
 		return cD.getClientByUsername(username);
 	}
+	
+	public ArrayList<Client> getAllClients()
+	{
+		return cD.getAllClients();
+	}
 }

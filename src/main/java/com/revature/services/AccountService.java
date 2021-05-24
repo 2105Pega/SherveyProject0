@@ -200,4 +200,9 @@ public class AccountService {
 	{
 		return aD.addCoOwner(aID, coID);
 	}
+	
+	public boolean updateStatus(AccountStatus s, int id)
+	{
+		return aD.updateStatus(s, id);
+	}
 }

@@ -3,10 +3,7 @@ package com.reavture.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,8 +11,6 @@ import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.revature.driver.BankDriver;
 
 public class ConnectionUtils {
 
@@ -75,42 +70,5 @@ public class ConnectionUtils {
 		
 		return c;
 	}
-
-/*
-	private static String[] setUp() {
-		
-		File propFile = new File("DBProperties.Properties");
-		
-		try {
-		if(!propFile.exists())
-		{
-			logger.fatal("FATAL ERROR: Database Properites File Is Not Present. Program Cannot Connect to Database.");
-			System.exit(1);
-		}
-		
-		FileInputStream fis = new FileInputStream(propFile); //FileNotFoundException
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		
-		String[] sArr = (String[]) ois.readObject();
-		
-		ois.close();
-		fis.close();
-		
-		return sArr;
-		
-		}
-		catch (IOException e)
-		{
-			logger.fatal("FATAL ERROR: Database Properites File Is Not Readable. Program Cannot Connect to Database.");
-			System.exit(1);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			logger.fatal("FATAL ERROR: Database Properites File Is Not Readable. Program Cannot Connect to Database.");
-			System.exit(1);
-		}
-		
-		return null;
-	}
-	*/
 	
 }

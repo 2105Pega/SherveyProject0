@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.reavture.utils.ConnectionUtils;
-import com.revature.bank.Account;
-import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
 
 public class ClientDOAIMP implements  ClientDAO {
@@ -168,5 +166,29 @@ public class ClientDOAIMP implements  ClientDAO {
 		}
 		return null;
 	}
+
+	@Override
+	public ArrayList<Client> getAllClients() {
+		try (Connection conn = ConnectionUtils.getConnection()){
+			
+			String sql = "select * from clients;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			ResultSet r = statement.executeQuery();
+
+			while(r.next())
+			{
+				ArrayList<Client> cList = new ArrayList<Client>();
+				cList.add(this.makeClient(r));
+			}
+
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 
 }

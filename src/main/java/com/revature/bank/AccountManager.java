@@ -1,13 +1,13 @@
 package com.revature.bank;
-
+/*
 import java.util.ArrayList;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+*/
 public class AccountManager {
-
+/*
 	private static ArrayList<Account> accountList;
 	private static final Logger logger = LogManager.getLogger(AccountManager.class);
 	
@@ -217,7 +217,7 @@ public class AccountManager {
 			logger.error("NullPointerException Occured in AccountManager.transfer");
 			throw new NullPointerException("Cannot Transfer to target Account. ID Not Found in System");
 		}
-		else if(target.getACCOUNT_ID().equals(sender.getACCOUNT_ID()))
+		else if(target.getACCOUNT_ID() == sender.getACCOUNT_ID())
 		{
 			logger.error("IllegalArgumentException Occured in AccountManager.transfer");
 			throw new IllegalArgumentException("Cannot Transfer To Same Account");
@@ -238,5 +238,5 @@ public class AccountManager {
 		
 		logger.info("Transfered " + ammount + " from " + sender.getAccountName() + ", ID: " + sender.getACCOUNT_ID() + ", to " + target.getAccountName() + ", ID: " + target.getACCOUNT_ID());
 	}
-
+*/
 }

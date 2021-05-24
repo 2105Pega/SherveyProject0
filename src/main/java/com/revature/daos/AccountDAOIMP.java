@@ -5,12 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.UUID;
-
 import com.reavture.utils.ConnectionUtils;
 import com.revature.bank.Account;
 import com.revature.bank.AccountStatus;
-import com.revature.bank.Client;
 
 public class AccountDAOIMP implements AccountDAO{
 
@@ -254,4 +251,24 @@ public class AccountDAOIMP implements AccountDAO{
 		return false;
 	}
 
+	@Override
+	public boolean updateStatus(AccountStatus s, int id) {
+		try (Connection conn = ConnectionUtils.getConnection()){
+			String sql = "update accounts set current_status = CAST(? AS status) where account_id = ?";
+			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, s.toString());
+			statement.setInt(2, id);
+			
+			statement.execute();
+			
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	
+	
 }

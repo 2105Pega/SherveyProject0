@@ -1,15 +1,8 @@
 package com.revature.driver;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
-import com.reavture.utils.ConnectionUtils;
-import com.revature.bank.Account;
 import com.revature.bank.AccountStatus;
-import com.revature.bank.Client;
 import com.revature.services.AccountService;
-import com.revature.services.ClientService;
 
 public class tester {
 
@@ -45,7 +38,7 @@ public class tester {
 		
 		//System.out.println(aS.getAllAccounts().toString());
 		//String accountName, AccountStatus status, double balance, int ownerID
-		Account a = new Account("TestAccount", AccountStatus.APPROVED, 0, 1);
+		System.out.println(aS.updateStatus(AccountStatus.APPROVED, 9));
 		
 		//System.out.println(aS.deposit(100, 200));
 		//System.out.println(aS.addAccount(a));
