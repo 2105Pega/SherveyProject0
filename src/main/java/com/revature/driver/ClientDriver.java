@@ -12,37 +12,30 @@ import com.revature.bank.AccountManager;
 import com.revature.bank.AccountStatus;
 import com.revature.bank.Client;
 import com.revature.bank.ClientManager;
+import com.revature.services.AccountService;
+import com.revature.services.ClientService;
 
 public class ClientDriver {
 
 	protected ArrayList<Client> clientList;
 	
-	private UUID currentClient;
-	private ClientManager cM;
+	private Client currentClient;
+	private ClientService cS;
+	private AccountService aS;
 	protected static ScannerSingleton sc = new ScannerSingleton();
-	protected AccountManager aM;
 	private static final Logger logger = LogManager.getLogger(ClientDriver.class);
 	
-	public ClientDriver(ClientManager clientManager, AccountManager aM)
+	public ClientDriver()
 	{
-		this.cM = clientManager;
-		this.aM = aM;
+		aS = new AccountService();
+		cS = new ClientService();
 	}
 	
 	public int logIn(String userName, String password)
-	{
-		boolean validLogIn = false;
-		for(Client c : clientList)
-		{
-			if(c.getUsername().equals(userName) && c.getPassword().equals(password))
-			{
-				currentClient = c.getClientID();
-				validLogIn = true;
-				logger.info("Loged in as " + c.toString());
-			}
-		}
+	{	
+		currentClient = cS.getClientByUserAndPass(userName, password);
 		
-		if(validLogIn == false)
+		if(currentClient == null)
 		{
 			logger.warn("Log in Failed with " + userName + " " + password);
 			return -1;
@@ -60,7 +53,7 @@ public class ClientDriver {
 		
 		do {
 			
-			System.out.println("Welcome " + cM.getClientByID(currentClient).getUsername() + "!\nPlease select one of the follow options.");
+			System.out.println("Welcome " + currentClient.getUsername() + "!\nPlease select one of the follow options.");
 			System.out.println("1.) Accounts Summary");
 			System.out.println("2.) Access Account");
 			System.out.println("3.) Apply for Account");
@@ -71,55 +64,33 @@ public class ClientDriver {
 			switch (selection)
 			{
 			case 1:
-				System.out.println(aM.accountsSummary(currentClient));
+				
+				for(Account a : aS.getAccountsByOwnerID(currentClient.getClientID()))
+				{
+					if(a != null)
+						a.toString();
+				}
+				
 				break;
+			
 			case 2:
 
 				System.out.println("Enter Account ID");
-				String id = sc.getLine();
-				Account a = null;
-				try {
-					a = aM.getAccountByAccountID(UUID.fromString(id));
-				}
-				catch(IllegalArgumentException e)
-				{
-					logger.error("caught IllegalArgumentException in clientManager, Account Access " + e.getMessage());
-					System.out.println("ID invalid. Please try again.");
-				}
-				
+				int id = sc.getInt();
+				Account a = aS.getAccountByID(id);
+
 				if(a == null)
 				{
-					System.out.println("Account ID not in System.");
+					logger.info("Account ID not in System.");
 					break;
 				}
 				
-				if(a.getOwnerID().equals(currentClient))
+				if(a.getOwnerID() == currentClient.getClientID() || aS.isCoOwned(currentClient.getClientID(), a.getACCOUNT_ID()))
 				{
-					try {
-						manageAccount(a);
-					} catch (Exception e) {
-						logger.warn("error in ClientManager, Access Account: " + e.getMessage());
-						e.printStackTrace();
-					}
+					manageAccount(a);
 					break;
 				}
-				else
-				{
-					for(UUID u : a.getCoOwnerIDs())
-					{
-						if(u.equals(currentClient))
-						{
-							try {
-								manageAccount(a);
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							break;
-						}
-					}
-					
-				}
+				
 				System.out.println("You are not a registered Owner or Co-Owner. Access Denied.");
 				break;
 			case 3:
@@ -135,7 +106,7 @@ public class ClientDriver {
 
 	}
 
-	protected void manageAccount(Account a) throws Exception {
+	protected void manageAccount(Account a) {
 		int selection = -1;
 		
 		do
@@ -151,7 +122,7 @@ public class ClientDriver {
 			switch (selection)
 			{
 			case 1: //Sumaraized Currently Selected Account
-				System.out.println(aM.accountSummary(a));
+				System.out.println();
 				break;
 				
 			case 2: //Withdars Money from Current Account
@@ -174,9 +145,14 @@ public class ClientDriver {
 				{
 					if(userName.equals(c.getUsername()))
 					{
-						a.getCoOwnerIDs().add(c.getClientID());
+						try {
+							aS.addCoOwner(a.getACCOUNT_ID(), cS.getClientByUsername(userName).getClientID());
 						logger.info("Added Co-Owner " + c.toString() + " to " + a.toString());
 						System.out.println("Added " + userName);
+						} catch (Exception e) {
+							logger.error(e.getMessage());
+						}
+						
 					}
 					else
 						System.out.println("Username not in System.");
@@ -184,10 +160,14 @@ public class ClientDriver {
 				break;
 				
 			case 6:
-				if(aM.getAccountByAccountID(currentClient).getBalance() == 0)
-					
-				
-				
+				try {
+					if(a.getBalance() == 0)
+						aS.removeAccountByID(a.getACCOUNT_ID());
+					else
+						System.out.println("Cannot delete Account with");
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}
 				break;
 				
 			case 7:
@@ -205,24 +185,13 @@ public class ClientDriver {
 		double transferValue = sc.getDouble();
 		
 		System.out.println("Enter Target Account's ID: ");
-		String transferAccountID = sc.getLine();
-		Account tAccount = aM.getAccountByAccountID(UUID.fromString(transferAccountID));
+		int transferAccountID = sc.getInt();
 		
 		try {
-		aM.transfer(a, tAccount, transferValue);
+			aS.transfer(a.getACCOUNT_ID(), transferAccountID, transferValue);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
-		catch (IllegalArgumentException e) {
-			logger.error("caught IllegalArgumentException in clientManager, Transfer " + e.getMessage());
-			System.out.println(e.getMessage());
-		}
-		catch (NullPointerException e){
-			logger.error("caught NullPointerException in clientManager, Transfer " + e.getMessage());
-			System.out.println(e.getMessage());
-		}
-		catch (IllegalStateException e) {
-			logger.error("caught IllegalStateException in clientManager, Transfer " + e.getMessage());
-			System.out.println(e.getMessage());
-		}	
 		
 	}
 
@@ -231,35 +200,21 @@ public class ClientDriver {
 		double depositValue = sc.getDouble();
 		
 		try {
-		aM.deposit(a, depositValue);
+			aS.deposit(a.getACCOUNT_ID(), depositValue);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
-		catch (IllegalArgumentException e){
-			logger.error("caught IllegalArgumentException in clientManager, Deposit " + e.getMessage());
-			System.out.println(e.getMessage());
-		}
-		catch (IllegalStateException e)
-		{
-			logger.error("caught IllegalStateException in clientManager, Deposit " + e.getMessage());
-			System.out.println(e.getMessage());
-		}
+		
 		
 	}
 
 	protected void withdraw(Account a) {
 		System.out.println("Ammount to Withdraw: ");
 		double withdrawValue = sc.getDouble();
-		
 		try {
-		aM.withdraw(a, withdrawValue);
-		}
-		catch (IllegalArgumentException e){
-			logger.error("caught IllegalArgumentException in clientManager, Withdraw " + e.getMessage());
-			System.out.println(e.getMessage());
-		}
-		catch (IllegalStateException e)
-		{
-			logger.error("caught IllegalStateException in clientManager, Withdraw " + e.getMessage());
-			System.out.println(e.getMessage());
+			aS.withdraw(a.getACCOUNT_ID(), withdrawValue);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 		}
 		
 	}
@@ -269,9 +224,16 @@ public class ClientDriver {
 		System.out.println("Name Account: ");
 		String accountName = sc.getLine();
 		
-		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient);
-		aM.addAccount(a);
-		cM.getClientByID(currentClient).getOwnedAccounts().add(a.getACCOUNT_ID());
-		logger.info("New Account created: " + a.toString());
+		Account a = new Account(accountName, AccountStatus.PENDING, 0, currentClient.getClientID());
+		try {
+			if(aS.addAccount(a))
+				logger.info("New Account created: " + a.toString());
+			else
+				System.out.println("Account not created, username already in use. Please use another Username.");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		
+		
 	}
 }

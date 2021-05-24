@@ -10,6 +10,7 @@ import java.util.UUID;
 import com.reavture.utils.ConnectionUtils;
 import com.revature.bank.Account;
 import com.revature.bank.AccountStatus;
+import com.revature.bank.Client;
 
 public class AccountDAOIMP implements AccountDAO{
 
@@ -28,7 +29,7 @@ public class AccountDAOIMP implements AccountDAO{
 			statement.execute();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 		return false;
 	}
@@ -44,7 +45,7 @@ public class AccountDAOIMP implements AccountDAO{
 			return true;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 		return false;
 	}
@@ -58,7 +59,7 @@ public class AccountDAOIMP implements AccountDAO{
 			return true;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 		return false;
 	}
@@ -76,7 +77,7 @@ public class AccountDAOIMP implements AccountDAO{
 			return a;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 		return null;
 	}
@@ -102,7 +103,7 @@ public class AccountDAOIMP implements AccountDAO{
 			}
 			return aList;
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.getMessage();
 		}
 		return null;
 	}
@@ -128,7 +129,7 @@ public class AccountDAOIMP implements AccountDAO{
 			}
 			return aList;
 		} catch (Exception e) {
-			
+			e.getMessage();
 		}
 		return null;
 	}
@@ -150,31 +151,13 @@ public class AccountDAOIMP implements AccountDAO{
 			}
 			return aList;
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 		return null;
 	}
 
 	@Override
 	public boolean withdraw(int id, double ammountChange) {
-		try (Connection conn = ConnectionUtils.getConnection()){
-			String sql = "update accounts set balance = balance + ? where account_id = ?;";
-			PreparedStatement statement = conn.prepareStatement(sql);
-			
-			statement.setFloat(1, (float) ammountChange);
-			statement.setInt(2, id);
-			statement.execute();
-			
-			return true;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public boolean deposit(int id, double ammountChange) {
 		try (Connection conn = ConnectionUtils.getConnection()){
 			String sql = "update accounts set balance = balance - ? where account_id = ?;";
 			PreparedStatement statement = conn.prepareStatement(sql);
@@ -184,8 +167,26 @@ public class AccountDAOIMP implements AccountDAO{
 			statement.execute();
 			
 			return true;
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deposit(int id, double ammountChange) {
+		try (Connection conn = ConnectionUtils.getConnection()){
+			String sql = "update accounts set balance = balance + ? where account_id = ?;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			statement.setFloat(1, (float) ammountChange);
+			statement.setInt(2, id);
+			statement.execute();
+			
+			return true;
+		} catch (Exception e) {
+			e.getMessage();
 		}
 		return false;
 	}
@@ -210,7 +211,19 @@ public class AccountDAOIMP implements AccountDAO{
 			return true;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.getMessage();
+		}
+		return false;
+	}
+	
+	public boolean isCoOwned(int clientID, int accountID)
+	{
+		ArrayList<Account> aL = this.getAccountsByCoOwnerID(clientID);
+		
+		for(Account a : aL)
+		{
+			if(a.getACCOUNT_ID()==accountID)
+				return true;
 		}
 		return false;
 	}
@@ -221,7 +234,24 @@ public class AccountDAOIMP implements AccountDAO{
 		
 		as = AccountStatus.valueOf(r.getString("current_status"));
 		
-		return new Account(r.getString("account_name"), as, (double) r.getFloat("balance"),r.getInt("account_id") );
+		return new Account(r.getInt("account_id"), r.getString("account_name"), as,  (double) r.getFloat("balance"), r.getInt("owner_id"));
+	}
+
+	@Override
+	public boolean addCoOwner(int aID, int coID) {
+		try (Connection conn = ConnectionUtils.getConnection()){
+			String sql = "insert into co_owners(co_owner_id, account_id) values(?, ?);";
+			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, aID);
+			statement.setInt(2, coID);
+			statement.execute();
+			
+			return true;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
 	}
 
 }

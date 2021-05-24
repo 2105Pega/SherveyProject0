@@ -40,4 +40,9 @@ public class ClientService {
 	{
 		return cD.updateClient(c);
 	}
+	
+	public Client getClientByUsername(String username)
+	{
+		return cD.getClientByUsername(username);
+	}
 }

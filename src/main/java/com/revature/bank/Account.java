@@ -60,8 +60,18 @@ public class Account implements Serializable {
 		this.accountName = accountName;
 	}
 	
-	public Account(String accountName, AccountStatus status, double balance, int ownerID) {
+	public Account( String accountName, AccountStatus status, double balance, int ownerID) {
 		super();
+		this.status = status;
+		this.balance = balance;
+		this.ownerID = ownerID;
+		this.accountName = accountName;
+		coOwnerIDs = new ArrayList<Integer>();
+	}
+	
+	public Account(int accountID, String accountName, AccountStatus status, double balance, int ownerID) {
+		super();
+		this.ACCOUNT_ID = accountID;
 		this.status = status;
 		this.balance = balance;
 		this.ownerID = ownerID;

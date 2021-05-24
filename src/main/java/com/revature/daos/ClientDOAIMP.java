@@ -33,6 +33,29 @@ public class ClientDOAIMP implements  ClientDAO {
 		return null;
 	}
 
+	public Client getClientByUsername(String username)
+	{
+		try (Connection conn = ConnectionUtils.getConnection()){
+			
+			String sql = "select * from clients where username = ?;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, username);
+			
+			ResultSet r = statement.executeQuery();
+
+			if(r.next())
+			{
+				return makeClient(r);
+			}
+
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	@Override
 	public Client getClientByUserAndPass(String username, String password) {
 		try (Connection conn = ConnectionUtils.getConnection()){

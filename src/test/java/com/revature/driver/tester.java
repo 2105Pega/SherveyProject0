@@ -19,7 +19,7 @@ public class tester {
 		//Account a = new Account("TestAccount", AccountStatus.PENDING, 0, 2);
 		//AccountService as = new AccountService();
 		
-		/* ClientDAOIMP test was done here via a basic ClientService.
+		/*//clientDAOIMP test was done here via a basic ClientService.
 		ClientService cS = new ClientService();
 		System.out.println(cS.getClientByID(1).toString());
 		System.out.println(cS.getClientByUserAndPass("AshMain", "NoBrains").toString());
@@ -43,13 +43,14 @@ public class tester {
 		//Account a = new Account("TestAccount", AccountStatus.PENDING, 0, 2);
 		AccountService aS = new AccountService();
 		
-		System.out.println(aS.getAccountByID(1).toString());
-		
+		//System.out.println(aS.getAllAccounts().toString());
 		//String accountName, AccountStatus status, double balance, int ownerID
 		Account a = new Account("TestAccount", AccountStatus.APPROVED, 0, 1);
+		
+		//System.out.println(aS.deposit(100, 200));
 		//System.out.println(aS.addAccount(a));
 		//System.out.println(aS.removeAccountByID(5));
-		//aS.addAccount(new Account("TestAccount", AccountStatus.DENIED, 0, 1));
+		//System.out.println(aS.addAccount(new Account("TestAccount", AccountStatus.DENIED, 0, 1)));
 		
 		//aS.addAccount(new Account("TestAccount", AccountStatus.CANCELED, 0, 1));
 		//System.out.println(aS.removeAccounts());

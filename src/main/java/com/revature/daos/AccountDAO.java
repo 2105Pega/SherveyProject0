@@ -19,6 +19,7 @@ public interface AccountDAO {
 	
 	public ArrayList<Account> getAccountsByOwnerID(int ID);
 	
+	
 	public ArrayList<Account> getAllAccounts();
 	
 	public boolean withdraw(int id, double ammountChange);
@@ -26,5 +27,9 @@ public interface AccountDAO {
 	public boolean deposit(int id, double ammountChange);
 	
 	public boolean transfer(int senderID, int targetID, double ammount);
+
+	public boolean isCoOwned(int clientID, int accountID);
+	
+	public boolean addCoOwner(int aID, int coID);
 
 }

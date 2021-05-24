@@ -97,3 +97,6 @@
 2021-05-18 14:47:06,732 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
 2021-05-18 14:47:15,678 [main] INFO  com.revature.driver.BankDriver - Starting Save.
 2021-05-18 14:47:15,681 [main] INFO  com.revature.driver.BankDriver - Save Completed.
+2021-05-24 08:31:16,457 [main] ERROR com.revature.services.AccountService - Account is not within the system.
+2021-05-24 08:32:22,772 [main] ERROR com.revature.services.AccountService - Account is not within the system.
+2021-05-24 08:33:00,567 [main] ERROR com.revature.services.AccountService - Account is not within the system.
