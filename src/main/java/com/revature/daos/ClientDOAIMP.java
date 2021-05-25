@@ -175,14 +175,14 @@ public class ClientDOAIMP implements  ClientDAO {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
 			ResultSet r = statement.executeQuery();
-
+			ArrayList<Client> cList = new ArrayList<Client>();
 			while(r.next())
 			{
-				ArrayList<Client> cList = new ArrayList<Client>();
+				
 				cList.add(this.makeClient(r));
 			}
 
-			
+			return cList;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

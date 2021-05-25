@@ -36,9 +36,11 @@ public class tester {
 		//Account a = new Account("TestAccount", AccountStatus.PENDING, 0, 2);
 		AccountService aS = new AccountService();
 		
+		System.out.println(aS.getAccountByID(2));
+		
 		//System.out.println(aS.getAllAccounts().toString());
 		//String accountName, AccountStatus status, double balance, int ownerID
-		System.out.println(aS.updateStatus(AccountStatus.APPROVED, 9));
+		//System.out.println(aS.updateStatus(AccountStatus.APPROVED, 9));
 		
 		//System.out.println(aS.deposit(100, 200));
 		//System.out.println(aS.addAccount(a));

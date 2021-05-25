@@ -64,7 +64,7 @@ public class ClientDriver {
 				for(Account a : aS.getAccountsByOwnerID(currentClient.getClientID()))
 				{
 					if(a != null)
-						a.toString();
+						System.out.println(a.toString());
 				}
 				
 				break;
@@ -118,7 +118,7 @@ public class ClientDriver {
 			switch (selection)
 			{
 			case 1: //Sumaraized Currently Selected Account
-				System.out.println();
+				System.out.println(a.toString());
 				break;
 				
 			case 2: //Withdars Money from Current Account
@@ -137,33 +137,32 @@ public class ClientDriver {
 				System.out.println("Please Enter co-owner User Name: ");
 				String userName = sc.getLine();
 				
-				for(Client c : clientList)
-				{
-					if(userName.equals(c.getUsername()))
-					{
-						try {
-							aS.addCoOwner(a.getACCOUNT_ID(), cS.getClientByUsername(userName).getClientID());
-						logger.info("Added Co-Owner " + c.toString() + " to " + a.toString());
-						System.out.println("Added " + userName);
-						} catch (Exception e) {
-							logger.error(e.getMessage());
-						}
-						
-					}
-					else
-						System.out.println("Username not in System.");
-				}
+				try {
+					Client c = cS.getClientByUsername(userName);
+					aS.addCoOwner(a.getACCOUNT_ID(), c.getClientID());
+					logger.info("Added Co-Owner " + c.toString() + " to " + a.toString());
+					System.out.println("Added " + userName);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+					System.out.println("Username not in System.");
+				}	
+				
 				break;
 				
 			case 6:
 				try {
 					if(a.getBalance() == 0)
+					{
 						aS.removeAccountByID(a.getACCOUNT_ID());
+						return;
+					}
 					else
-						System.out.println("Cannot delete Account with");
+						System.out.println("Account Balance must be 0 to delete.");
+					
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}
+				
 				break;
 				
 			case 7:
@@ -173,7 +172,7 @@ public class ClientDriver {
 
 			}
 			selection = -1;
-		}while(selection != 6);
+		}while(selection != 7);
 	}
 	
 	protected void transfer(Account a) {
@@ -185,6 +184,7 @@ public class ClientDriver {
 		
 		try {
 			aS.transfer(a.getACCOUNT_ID(), transferAccountID, transferValue);
+			a.setBalance(a.getBalance() - transferValue);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -197,6 +197,7 @@ public class ClientDriver {
 		
 		try {
 			aS.deposit(a.getACCOUNT_ID(), depositValue);
+			a.setBalance(a.getBalance() + depositValue);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -209,6 +210,7 @@ public class ClientDriver {
 		double withdrawValue = sc.getDouble();
 		try {
 			aS.withdraw(a.getACCOUNT_ID(), withdrawValue);
+			a.setBalance(a.getBalance() - withdrawValue);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -225,7 +227,7 @@ public class ClientDriver {
 			if(aS.addAccount(a))
 				logger.info("New Account created: " + a.toString());
 			else
-				System.out.println("Account not created, username already in use. Please use another Username.");
+				System.out.println("Account not created.");
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -234,6 +236,7 @@ public class ClientDriver {
 	public void createClient() {
 		String username, password, fName, lName, address;
 		
+		System.out.println("Enter Username: ");
 		username = sc.getLine();
 		
 		while(cS.getClientByUsername(username) != null)

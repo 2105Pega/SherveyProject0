@@ -18,7 +18,7 @@ public class AccountService {
 	public Account getAccountByID(int id)
 	{
 		try {
-			aD.getAccountByID(id);
+			return aD.getAccountByID(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -33,7 +33,7 @@ public class AccountService {
 				throw new NullPointerException("Attempted to add Null Account.");
 			}
 		
-			aD.addAccount(a);
+			return aD.addAccount(a);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -43,7 +43,7 @@ public class AccountService {
 	public boolean removeAccountByID(int id)
 	{
 	try {
-			aD.removeAccount(id);
+			return aD.removeAccount(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -53,7 +53,7 @@ public class AccountService {
 	public boolean removeAccounts()
 	{
 	try {
-				aD.removeAccounts();
+				return aD.removeAccounts();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -63,7 +63,7 @@ public class AccountService {
 	public ArrayList<Account> getAccountsByOwnerID(int id)
 	{
 	try {
-			aD.getAccountsByOwnerID(id);
+			return aD.getAccountsByOwnerID(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -73,7 +73,7 @@ public class AccountService {
 	public ArrayList<Account> getAccountsByCoOwnerID(int id)
 	{
 	try {
-			aD.getAccountsByCoOwnerID(id);
+			return aD.getAccountsByCoOwnerID(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -83,7 +83,7 @@ public class AccountService {
 	public ArrayList<Account> getAllAccounts()
 	{
 	try {
-			aD.getAllAccounts();
+			return aD.getAllAccounts();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -180,6 +180,10 @@ public class AccountService {
 		else if(aD.getAccountByID(senderID).getBalance() < ammount)
 		{
 			throw new IllegalArgumentException("Cannot withdraw more funds then are available in account.");
+		}
+		else if(senderID == targetID)
+		{
+			throw new IllegalArgumentException("Cannot Transfer to the same account.");
 		}
 		else if(sender.getStatus() == AccountStatus.DENIED || sender.getStatus() == AccountStatus.CANCELED || sender.getStatus() == AccountStatus.PENDING)
 		{

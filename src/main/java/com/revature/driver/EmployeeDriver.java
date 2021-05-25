@@ -29,7 +29,6 @@ public class EmployeeDriver extends ClientDriver{
 		}
 		else
 			return -1;
-			
 	}
 	
 	public void employeMenu()
@@ -76,7 +75,7 @@ public class EmployeeDriver extends ClientDriver{
 				
 				break;
 			case 3:
-				super.createAccount();
+				super.createClient();
 				break;
 			case 4:
 				for(Account a2 : aS.getAllAccounts())

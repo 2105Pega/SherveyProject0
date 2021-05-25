@@ -100,3 +100,51 @@
 2021-05-24 08:31:16,457 [main] ERROR com.revature.services.AccountService - Account is not within the system.
 2021-05-24 08:32:22,772 [main] ERROR com.revature.services.AccountService - Account is not within the system.
 2021-05-24 08:33:00,567 [main] ERROR com.revature.services.AccountService - Account is not within the system.
+2021-05-24 16:17:12,096 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 16:21:19,359 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 16:24:46,949 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 16:25:44,196 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 16:26:17,136 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 16:26:37,385 [main] INFO  com.revature.driver.ClientDriver - Account ID not in System.
+2021-05-24 16:26:45,288 [main] INFO  com.revature.driver.ClientDriver - Account ID not in System.
+2021-05-24 16:29:02,192 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 16:29:38,832 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 16:36:41,739 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 17:17:33,820 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 18:39:54,629 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 18:46:47,914 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 18:47:39,016 [main] ERROR com.revature.driver.ClientDriver - null
+2021-05-24 18:47:56,591 [main] INFO  com.revature.driver.ClientDriver - Added Co-Owner Client [userName=ThatcherMain, password=IHATELASERSIGHTS, firstName=Jamie, lastName=Muffet, address=Hereforc, England, clientID=2] to Account [accountName=TestAccount, status=APPROVED, ACCOUNT_ID=9, balance=320.0, ownerID=1]
+2021-05-24 18:50:13,160 [main] INFO  com.revature.driver.ClientDriver - Added Co-Owner Client [userName=ThatcherMain, password=IHATELASERSIGHTS, firstName=Jamie, lastName=Muffet, address=Hereforc, England, clientID=2] to Account [accountName=TestAccount, status=APPROVED, ACCOUNT_ID=9, balance=320.0, ownerID=1]
+2021-05-24 18:51:48,427 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 18:52:08,990 [main] INFO  com.revature.driver.ClientDriver - Added Co-Owner Client [userName=ThatcherMain, password=IHATELASERSIGHTS, firstName=Jamie, lastName=Muffet, address=Hereforc, England, clientID=2] to Account [accountName=TestAccount, status=APPROVED, ACCOUNT_ID=9, balance=320.0, ownerID=1]
+2021-05-24 18:52:31,211 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 18:52:56,093 [main] INFO  com.revature.driver.ClientDriver - Added Co-Owner Client [userName=ThatcherMain, password=IHATELASERSIGHTS, firstName=Jamie, lastName=Muffet, address=Hereforc, England, clientID=2] to Account [accountName=TestAccount, status=APPROVED, ACCOUNT_ID=9, balance=320.0, ownerID=1]
+2021-05-24 18:55:25,979 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 18:57:25,892 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:00:02,434 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:01:57,271 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:02:42,027 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:04:26,150 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:07:32,504 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:08:12,006 [main] INFO  com.revature.driver.ClientDriver - Account ID not in System.
+2021-05-24 19:08:22,130 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-24 19:13:33,570 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:13:37,866 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-24 19:14:16,180 [main] INFO  com.revature.driver.EmployeeDriver - New username set for1changed from AshMain to Ash
+2021-05-24 19:14:24,650 [main] INFO  com.revature.driver.EmployeeDriver - New password set for1changed from NoBrains to nade
+2021-05-24 19:14:29,594 [main] INFO  com.revature.driver.EmployeeDriver - First Name set for1changed from Eliza to TestAshFirst
+2021-05-24 19:14:35,082 [main] INFO  com.revature.driver.EmployeeDriver - Last Name set for1changed from Cohen to testAshLast
+2021-05-24 19:14:41,058 [main] INFO  com.revature.driver.EmployeeDriver - Address set for1changed from Washington DC to TestAshAddress
+2021-05-24 19:15:03,818 [main] INFO  com.revature.driver.EmployeeDriver - New username set for1changed from Ash to AshMain
+2021-05-24 19:15:38,275 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:15:44,794 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-24 19:16:19,201 [main] INFO  com.revature.driver.EmployeeDriver - Account Thatchers AccountStatus Updated to APPROVED
+2021-05-24 19:16:53,236 [main] INFO  com.revature.driver.EmployeeDriver - Account Ashs AccountStatus Updated to CANCELED
+2021-05-24 19:50:59,983 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-24 19:51:03,529 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-24 19:51:42,770 [main] WARN  com.revature.driver.EmployeeDriver - Account not found in system. Try again.
+2021-05-24 19:51:57,481 [main] INFO  com.revature.driver.EmployeeDriver - Account Thatchers 2nd AccountStatus Updated to APPROVED
+2021-05-24 19:52:10,651 [main] INFO  com.revature.driver.EmployeeDriver - Account Thatchers 2nd AccountStatus Updated to DENIED
+2021-05-24 19:52:26,596 [main] INFO  com.revature.driver.EmployeeDriver - Account Thatchers 2nd AccountStatus Updated to CANCELED
+2021-05-24 20:03:08,323 [main] INFO  com.revature.driver.EmployeeDriver - New Account created: Account [accountName=AshIsDumb, status=PENDING, ACCOUNT_ID=0, balance=0.0, ownerID=1]

@@ -34,9 +34,15 @@ public class AccountDAOIMP implements AccountDAO{
 	@Override
 	public boolean removeAccount(int id) {
 		try (Connection conn = ConnectionUtils.getConnection()){
-			String sql = "delete from accounts where account_id =?;";
 			
+			String sql = "delete from co_owners where account_id =?;";
 			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, id);
+			statement.execute();
+			
+			sql = "delete from accounts where account_id =?;";
+			
+			statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			statement.execute();
 			return true;
@@ -50,8 +56,14 @@ public class AccountDAOIMP implements AccountDAO{
 	@Override
 	public boolean removeAccounts() {
 		try (Connection conn = ConnectionUtils.getConnection()){
-			String sql = "delete from accounts where current_status = 'CANCELED' or current_status = 'DENIED';";
+			String sql = "delete from co_owners using accounts where " +
+					"co_owners.account_id = accounts.account_id and "
+					+ "(accounts.current_status = 'CANCELED' or accounts.current_status = 'DENIED');";
 			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.execute();
+			
+			sql = "delete from accounts where current_status = 'CANCELED' or current_status = 'DENIED';";
+			statement = conn.prepareStatement(sql);
 			statement.execute();
 			return true;
 			
@@ -237,7 +249,7 @@ public class AccountDAOIMP implements AccountDAO{
 	@Override
 	public boolean addCoOwner(int aID, int coID) {
 		try (Connection conn = ConnectionUtils.getConnection()){
-			String sql = "insert into co_owners(co_owner_id, account_id) values(?, ?);";
+			String sql = "insert into co_owners(account_id, co_owner_id) values(?, ?);";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, aID);
