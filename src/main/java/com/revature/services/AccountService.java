@@ -25,6 +25,16 @@ public class AccountService {
 			return null;
 	}
 
+	public ArrayList getCoOwnedAccounts(int id)
+	{
+		try {
+			return aD.getAccountsByCoOwnerID(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public boolean addAccount(Account a)
 	{
 		try {
@@ -125,7 +135,7 @@ public class AccountService {
 				return aD.withdraw(id, ammountChange);
 		
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		
 		return false;

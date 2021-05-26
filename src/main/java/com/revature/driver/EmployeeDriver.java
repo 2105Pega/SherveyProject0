@@ -80,7 +80,12 @@ public class EmployeeDriver extends ClientDriver{
 			case 4:
 				for(Account a2 : aS.getAllAccounts())
 				{
-					System.out.println(a2.toString());
+					try {
+						System.out.println(a2.toString());
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					
 				}
 				break;
 				
@@ -247,16 +252,19 @@ public class EmployeeDriver extends ClientDriver{
 			{
 			case 1:
 				aS.updateStatus(AccountStatus.APPROVED, a.getACCOUNT_ID());
+				a.setStatus(AccountStatus.APPROVED);
 				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
 				logger.info("Account " + a.getAccountName() + "Status Updated to APPROVED");
 				break;
 			case 2:
 				aS.updateStatus(AccountStatus.DENIED, a.getACCOUNT_ID());
+				a.setStatus(AccountStatus.DENIED);
 				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
 				logger.info("Account " + a.getAccountName() + "Status Updated to DENIED");
 				break;
 			case 3:
 				aS.updateStatus(AccountStatus.CANCELED, a.getACCOUNT_ID());
+				a.setStatus(AccountStatus.CANCELED);
 				System.out.println(a.getAccountName() + "Set to " + a.getStatus());
 				logger.info("Account " + a.getAccountName() + "Status Updated to CANCELED");
 				break;

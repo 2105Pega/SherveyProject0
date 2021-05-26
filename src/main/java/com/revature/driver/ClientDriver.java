@@ -37,7 +37,7 @@ public class ClientDriver {
 			return -1;
 		}
 		
-		System.out.println("User Info: " + currentClient.toString());
+		System.out.println("User: " + currentClient.getUsername() + ", ID: " + currentClient.getClientID());
 		clientMenu();
 		
 		return 1;
@@ -64,9 +64,15 @@ public class ClientDriver {
 				for(Account a : aS.getAccountsByOwnerID(currentClient.getClientID()))
 				{
 					if(a != null)
-						System.out.println(a.toString());
+						System.out.println("Account: " + a.getAccountName() + ", Balance: " + a.getBalance() + " ID: " + a.getACCOUNT_ID() + " Status: " + a.getStatus());
 				}
-				
+				System.out.println("-------- Co-Owned Accounts: ");
+				for(Account a : aS.getAccountsByCoOwnerID(currentClient.getClientID()))
+				{
+					if(a != null)
+						System.out.println("Account: " + a.getAccountName() + ", Balance: " + a.getBalance() + " ID: " + a.getACCOUNT_ID() + " Status: " + a.getStatus());
+				}
+				System.out.println("------------------------------- ");
 				break;
 			
 			case 2:
@@ -118,7 +124,8 @@ public class ClientDriver {
 			switch (selection)
 			{
 			case 1: //Sumaraized Currently Selected Account
-				System.out.println(a.toString());
+				System.out.println("Account: " + a.getAccountName() + ", Balance: " 
+			+ a.getBalance() + " ID: " + a.getACCOUNT_ID() + " Status: " + a.getStatus());
 				break;
 				
 			case 2: //Withdars Money from Current Account
@@ -153,8 +160,12 @@ public class ClientDriver {
 				try {
 					if(a.getBalance() == 0)
 					{
-						aS.removeAccountByID(a.getACCOUNT_ID());
-						return;
+						if(aS.removeAccountByID(a.getACCOUNT_ID()));
+						{
+							logger.info("Account removed.");
+							selection = 7;
+							return;
+						}
 					}
 					else
 						System.out.println("Account Balance must be 0 to delete.");
@@ -162,16 +173,13 @@ public class ClientDriver {
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}
-				
 				break;
 				
 			case 7:
 				return;
 			default:
 				break;
-
 			}
-			selection = -1;
 		}while(selection != 7);
 	}
 	
@@ -259,6 +267,6 @@ public class ClientDriver {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+		logger.info("New Client Created.");
 	}
 }

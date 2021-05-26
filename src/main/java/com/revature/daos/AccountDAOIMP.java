@@ -90,6 +90,30 @@ public class AccountDAOIMP implements AccountDAO{
 		}
 		return null;
 	}
+	
+	public ArrayList<Account> getCoownedAccounts(int id) {
+		try (Connection conn = ConnectionUtils.getConnection()){
+			
+			String sql = "select * from accounts a inner join co_owners co on co.account_id = a.account_id where co.co_owner_id = ?";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, id);
+			ResultSet r = statement.executeQuery();
+			
+			ArrayList<Account> aList = new ArrayList<Account>();
+			
+			while(r.next())
+			{
+				Account a = makeAccount(r);
+				aList.add(a);
+				
+			}
+			return aList;
+			
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return null;
+	}
 
 	@Override
 	public ArrayList<Account> getAccountsByCoOwnerID(int id) {
