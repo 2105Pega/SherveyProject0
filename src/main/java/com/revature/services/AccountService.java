@@ -197,7 +197,7 @@ public class AccountService {
 		}
 		else if(sender.getStatus() == AccountStatus.DENIED || sender.getStatus() == AccountStatus.CANCELED || sender.getStatus() == AccountStatus.PENDING)
 		{
-			throw new IllegalStateException("Target Account Status is " + target.getStatus() + " Transfers are not allowed with this status.");
+			throw new IllegalStateException("Sending Account Status is " + target.getStatus() + " Transfers are not allowed with this status.");
 		}
 		else if(target.getStatus() == AccountStatus.DENIED || target.getStatus() == AccountStatus.CANCELED || target.getStatus() == AccountStatus.PENDING)
 		{
