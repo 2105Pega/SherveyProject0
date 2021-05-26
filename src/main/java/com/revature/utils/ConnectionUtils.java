@@ -1,4 +1,4 @@
-package com.reavture.utils;
+package com.revature.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

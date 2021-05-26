@@ -1,4 +1,4 @@
-package com.reavture.utils;
+package com.revature.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
