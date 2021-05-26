@@ -1,7 +1,10 @@
-package com.revature.bank;
+package com.revature.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import com.revature.bank.Account;
+import com.revature.bank.Client;
 
 public class SavePacket implements Serializable{
 

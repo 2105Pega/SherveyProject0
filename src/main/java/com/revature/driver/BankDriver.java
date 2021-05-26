@@ -1,20 +1,9 @@
 package com.revature.driver;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.revature.bank.Account;
-import com.revature.bank.AccountManager;
-import com.revature.bank.Client;
-import com.revature.bank.SavePacket;
+import com.reavture.utils.ScannerSingleton;
 
 public class BankDriver {
 	
@@ -25,91 +14,15 @@ public class BankDriver {
 	private static final Logger logger = LogManager.getLogger(BankDriver.class);
 	public static void main(String args[])
 	{
-		
 		logger.info("Starting Main Driver.");
 		
-		SavePacket s = loadSave();
-		ArrayList<Client> clientList;
-		ArrayList<Account> accountList;
+		clientDriver = new ClientDriver();
+		employeeDriver = new EmployeeDriver();
 		
-		if(s != null)
-		{
-			clientList = s.getClients();
-			accountList = s.getAccounts();
-		}
-		else
-		{	
-			logger.warn("Could not load save file. Creating new client and account list.");
-			clientList = new ArrayList<Client>();
-			accountList = new ArrayList<Account>();
-		}
-		
-		AccountManager accountManager = new AccountManager(accountList);
-		clientDriver = new ClientDriver(clientList, accountManager);
-		employeeDriver = new EmployeeDriver(clientList, accountManager);
-		
-		menu();
-		
-		save(clientList, accountList);
+		menu(clientDriver);
 	}
 
-	
-	private static void save(ArrayList<Client> clientList, ArrayList<Account> accountList) {
-		File accountFile = new File("Information.txt");
-		
-		logger.info("Starting Save.");
-		
-		try {
-		if(!accountFile.exists())
-			accountFile.createNewFile(); //IOexception
-		
-		FileOutputStream fos = new FileOutputStream(accountFile); //FileNotFoundException
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		
-		SavePacket save = new SavePacket(accountList, clientList);
-		
-		oos.writeObject(save);
-		
-		oos.close();
-		fos.close();
-		logger.info("Save Completed.");
-		}
-		catch (IOException e)
-		{
-			logger.error("Save Failed to Complete." + e.getMessage());
-		}
-		
-	}
-
-	private static SavePacket loadSave() 
-	{
-		File accountFile = new File("Information.txt");
-		
-		try {
-		if(!accountFile.exists())
-			accountFile.createNewFile(); //IOexception
-		
-		FileInputStream fis = new FileInputStream(accountFile); //FileNotFoundException
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		
-		SavePacket save = (SavePacket) ois.readObject();
-		
-		ois.close();
-		fis.close();
-		return save;
-		}
-		catch (IOException e)
-		{
-			logger.error("Load Failed to Complete Load. Could not Import Client or Account List" + e.getMessage());
-		}
-		catch (ClassNotFoundException e)
-		{
-			logger.error("Load Failed to Complete Load when reading from file. Could not Import Client or Account List" + e.getMessage());
-		}
-		return null;
-	}
-
-	public static void menu()
+	public static void menu(ClientDriver cD)
 	{
 		int selection = -1;
 		
@@ -139,7 +52,7 @@ public class BankDriver {
 				break;
 			case 2:
 				System.out.println("Create Client Account Selected.");
-				clientDriver.createClient();
+				cD.createClient();
 				break;
 			case 3:
 				System.out.println("Employee Log In Selected.");
