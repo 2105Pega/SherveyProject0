@@ -185,3 +185,19 @@
 2021-05-25 22:28:15,254 [main] INFO  com.revature.driver.ClientDriver - Added Co-Owner Client [userName=AshMain, password=NoBrains, firstName=Eliza, lastName=Cohen, address=Washington DC, clientID=1] to Account [accountName=SherveySavings, status=APPROVED, ACCOUNT_ID=5, balance=4900.0, ownerID=3]
 2021-05-26 06:54:35,520 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
 2021-05-26 07:03:44,910 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-26 07:15:24,625 [main] INFO  com.revature.driver.ClientDriver - New Client Created.
+2021-05-26 07:15:48,599 [main] INFO  com.revature.driver.ClientDriver - New Account created: Account [accountName=Eric's Account, status=PENDING, ACCOUNT_ID=0, balance=0.0, ownerID=3]
+2021-05-26 07:16:04,045 [main] ERROR com.revature.services.AccountService - Target Account Status is PENDING Transfers are not allowed with this status.
+2021-05-26 07:16:14,078 [main] INFO  com.revature.driver.EmployeeDriver - Logged Is As Admim.
+2021-05-26 07:16:29,238 [main] INFO  com.revature.driver.EmployeeDriver - Account Eric's AccountStatus Updated to APPROVED
+2021-05-26 07:17:18,194 [main] ERROR com.revature.services.AccountService - Target Account Status is PENDING Transfers are not allowed with this status.
+2021-05-26 07:17:58,616 [main] ERROR com.revature.services.AccountService - Target Account Status is PENDING Transfers are not allowed with this status.
+2021-05-26 07:20:17,527 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-26 07:20:45,403 [main] ERROR com.revature.services.AccountService - Target Account is not within the system.
+2021-05-26 07:21:03,322 [main] ERROR com.revature.driver.ClientDriver - null
+2021-05-26 07:21:10,519 [main] ERROR com.revature.services.AccountService - Target Account Status is PENDING Transfers are not allowed with this status.
+2021-05-26 07:21:19,652 [main] ERROR com.revature.services.AccountService - Target Account Status is PENDING Transfers are not allowed with this status.
+2021-05-26 07:23:05,546 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-26 07:26:18,061 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-26 07:26:37,318 [main] WARN  com.revature.driver.ClientDriver - Log in Failed with EricS 
+2021-05-26 07:27:02,449 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.

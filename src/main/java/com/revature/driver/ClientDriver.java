@@ -191,8 +191,8 @@ public class ClientDriver {
 		int transferAccountID = sc.getInt();
 		
 		try {
-			aS.transfer(a.getACCOUNT_ID(), transferAccountID, transferValue);
-			a.setBalance(a.getBalance() - transferValue);
+			if(aS.transfer(a.getACCOUNT_ID(), transferAccountID, transferValue));
+				a.setBalance(a.getBalance() - transferValue);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -204,8 +204,8 @@ public class ClientDriver {
 		double depositValue = sc.getDouble();
 		
 		try {
-			aS.deposit(a.getACCOUNT_ID(), depositValue);
-			a.setBalance(a.getBalance() + depositValue);
+			if(aS.deposit(a.getACCOUNT_ID(), depositValue));
+				a.setBalance(a.getBalance() + depositValue);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -217,8 +217,8 @@ public class ClientDriver {
 		System.out.println("Ammount to Withdraw: ");
 		double withdrawValue = sc.getDouble();
 		try {
-			aS.withdraw(a.getACCOUNT_ID(), withdrawValue);
-			a.setBalance(a.getBalance() - withdrawValue);
+			if(aS.withdraw(a.getACCOUNT_ID(), withdrawValue));
+				a.setBalance(a.getBalance() - withdrawValue);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
