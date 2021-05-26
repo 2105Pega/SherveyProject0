@@ -184,3 +184,4 @@
 2021-05-25 22:28:01,898 [main] ERROR com.revature.services.AccountService - Target Account Status is PENDING Transfers are not allowed with this status.
 2021-05-25 22:28:15,254 [main] INFO  com.revature.driver.ClientDriver - Added Co-Owner Client [userName=AshMain, password=NoBrains, firstName=Eliza, lastName=Cohen, address=Washington DC, clientID=1] to Account [accountName=SherveySavings, status=APPROVED, ACCOUNT_ID=5, balance=4900.0, ownerID=3]
 2021-05-26 06:54:35,520 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
+2021-05-26 07:03:44,910 [main] INFO  com.revature.driver.BankDriver - Starting Main Driver.
